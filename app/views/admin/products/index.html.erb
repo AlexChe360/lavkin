@@ -1,0 +1,335 @@
+<% content_for :title, "Товары — Lavkin" %>
+
+<div>
+
+  <!-- HEADER -->
+
+  <div class="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+
+    <div>
+
+      <h1 class="text-2xl font-black tracking-[-0.04em]">
+        Товары
+      </h1>
+
+      <p class="mt-1 text-sm text-[#616161]">
+        Управляйте каталогом магазина
+        <strong class="text-[#303030]">
+          <%= Current.shop.name %>
+        </strong>.
+      </p>
+
+    </div>
+
+
+    <%= link_to new_admin_product_path,
+                class: "inline-flex h-10 items-center justify-center rounded-xl bg-[#303030] px-4 text-sm font-black text-white hover:bg-black" do %>
+
+      <span class="mr-2 text-lg leading-none">
+        +
+      </span>
+
+      Добавить товар
+
+    <% end %>
+
+  </div>
+
+
+
+  <!-- TABLE CARD -->
+
+  <section class="mt-7 overflow-hidden rounded-2xl border border-black/10 bg-white">
+
+
+    <!-- TOOLBAR -->
+
+    <div class="border-b border-black/10 p-4">
+
+      <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
+
+        <div class="relative flex-1">
+
+          <svg
+            class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#8a8a8a]"
+            width="17"
+            height="17"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+
+          <input
+            type="search"
+            placeholder="Поиск товаров"
+            class="h-10 w-full rounded-xl border border-black/10 bg-white pl-10 pr-4 text-sm outline-none focus:border-[#008060]"
+          >
+
+        </div>
+
+
+        <button
+          type="button"
+          class="h-10 rounded-xl border border-black/10 bg-white px-4 text-sm font-black hover:bg-[#f7f7f7]"
+        >
+          Категория
+        </button>
+
+
+        <button
+          type="button"
+          class="h-10 rounded-xl border border-black/10 bg-white px-4 text-sm font-black hover:bg-[#f7f7f7]"
+        >
+          Статус
+        </button>
+
+      </div>
+
+    </div>
+
+
+
+    <% if @products.any? %>
+
+      <div class="overflow-x-auto">
+
+        <table class="w-full min-w-[900px]">
+
+          <thead class="bg-[#f7f7f7]">
+
+            <tr class="border-b border-black/10">
+
+              <th class="w-12 px-4 py-3">
+                <input
+                  type="checkbox"
+                  class="size-4 rounded border-black/20"
+                >
+              </th>
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Товар
+              </th>
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Статус
+              </th>
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Категория
+              </th>
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                SKU
+              </th>
+
+              <th class="px-4 py-3 text-right text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Цена
+              </th>
+
+              <th class="w-14 px-4 py-3"></th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody class="divide-y divide-black/10">
+
+            <% @products.each do |product| %>
+
+              <tr class="transition hover:bg-[#fafafa]">
+
+                <!-- CHECKBOX -->
+
+                <td class="px-4 py-3">
+
+                  <input
+                    type="checkbox"
+                    class="size-4 rounded border-black/20"
+                  >
+
+                </td>
+
+
+                <!-- PRODUCT -->
+
+                <td class="px-4 py-3">
+
+                  <%= link_to admin_product_path(product),
+                              class: "flex items-center gap-3" do %>
+
+                    <% if product.image.attached? %>
+
+                      <%= image_tag product.image,
+                                    class: "size-12 shrink-0 rounded-lg border border-black/10 object-cover" %>
+
+                    <% else %>
+
+                      <div class="flex size-12 shrink-0 items-center justify-center rounded-lg border border-black/10 bg-[#f1f1f1] text-xs font-black text-[#8a8a8a]">
+                        IMG
+                      </div>
+
+                    <% end %>
+
+
+                    <div class="min-w-0">
+
+                      <p class="truncate text-sm font-black text-[#303030]">
+                        <%= product.name %>
+                      </p>
+
+                      <% if product.featured? %>
+
+                        <p class="mt-1 text-xs font-bold text-[#008060]">
+                          Рекомендуемый
+                        </p>
+
+                      <% end %>
+
+                    </div>
+
+                  <% end %>
+
+                </td>
+
+
+                <!-- STATUS -->
+
+                <td class="px-4 py-3">
+
+                  <% if product.active? %>
+
+                    <span class="inline-flex rounded-full bg-[#e3f1df] px-2.5 py-1 text-[11px] font-black text-[#0a5c36]">
+                      Активен
+                    </span>
+
+                  <% else %>
+
+                    <span class="inline-flex rounded-full bg-[#eeeeee] px-2.5 py-1 text-[11px] font-black text-[#616161]">
+                      Черновик
+                    </span>
+
+                  <% end %>
+
+                </td>
+
+
+                <!-- CATEGORY -->
+
+                <td class="px-4 py-3 text-sm text-[#616161]">
+                  <%= product.category&.name || "—" %>
+                </td>
+
+
+                <!-- SKU -->
+
+                <td class="px-4 py-3 font-mono text-sm text-[#616161]">
+                  <%= product.sku %>
+                </td>
+
+
+                <!-- PRICE -->
+
+                <td class="px-4 py-3 text-right">
+
+                  <p class="text-sm font-black">
+                    <%= number_to_currency(
+                          product.price,
+                          unit: "₸",
+                          format: "%n %u",
+                          delimiter: " ",
+                          separator: ","
+                        ) %>
+                  </p>
+
+
+                  <% if product.compare_at_price.present? &&
+                        product.compare_at_price > product.price %>
+
+                    <p class="mt-1 text-xs text-[#8a8a8a] line-through">
+                      <%= number_to_currency(
+                            product.compare_at_price,
+                            unit: "₸",
+                            format: "%n %u",
+                            delimiter: " ",
+                            separator: ","
+                          ) %>
+                    </p>
+
+                  <% end %>
+
+                </td>
+
+
+                <!-- ACTION -->
+
+                <td class="px-4 py-3 text-right">
+
+                  <%= link_to edit_admin_product_path(product),
+                              class: "inline-flex size-9 items-center justify-center rounded-lg transition hover:bg-[#f1f1f1]",
+                              title: "Редактировать" do %>
+
+                    <span class="text-lg">
+                      ⋯
+                    </span>
+
+                  <% end %>
+
+                </td>
+
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <!-- FOOTER -->
+
+      <div class="flex items-center justify-between border-t border-black/10 px-4 py-3">
+
+        <p class="text-xs text-[#8a8a8a]">
+          Товаров:
+          <strong class="text-[#303030]">
+            <%= @products.size %>
+          </strong>
+        </p>
+
+      </div>
+
+
+    <% else %>
+
+      <div class="px-6 py-16 text-center">
+
+        <div class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-[#f1f1f1] text-xl">
+          ◇
+        </div>
+
+        <h2 class="mt-5 text-lg font-black">
+          Товаров пока нет
+        </h2>
+
+        <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-[#8a8a8a]">
+          Добавьте первый товар в каталог магазина.
+        </p>
+
+        <%= link_to "Добавить товар",
+                    new_admin_product_path,
+                    class: "mt-6 inline-flex h-10 items-center rounded-xl bg-[#303030] px-4 text-sm font-black text-white hover:bg-black" %>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+</div>

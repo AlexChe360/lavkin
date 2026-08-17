@@ -1,0 +1,230 @@
+<% content_for :title, "Корзина — #{@shop.name}" %>
+
+<div class="min-h-screen">
+
+  <header class="border-b border-black/10 bg-white">
+
+    <div class="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-5 sm:px-6 lg:px-8">
+
+      <%= link_to storefront_root_path(
+                    shop_slug: @shop.slug
+                  ),
+                  class: "text-lg font-black" do %>
+
+        <%= @shop.name %>
+
+      <% end %>
+
+      <span class="text-sm font-bold text-[#616161]">
+        Корзина
+      </span>
+
+    </div>
+
+  </header>
+
+
+  <main class="mx-auto max-w-[1000px] px-5 py-8 sm:px-6 lg:px-8">
+
+    <%= link_to "← Продолжить покупки",
+                storefront_root_path(
+                  shop_slug: @shop.slug
+                ),
+                class: "text-sm font-bold text-[#616161] hover:text-black" %>
+
+
+    <h1 class="mt-5 text-3xl font-black tracking-[-0.05em]">
+      Корзина
+    </h1>
+
+
+    <% if @cart_items.any? %>
+
+      <div class="mt-7 grid gap-6 lg:grid-cols-[1fr_320px]">
+
+        <!-- ITEMS -->
+
+        <section class="overflow-hidden rounded-2xl border border-black/10 bg-white">
+
+          <div class="divide-y divide-black/10">
+
+            <% @cart_items.each do |item| %>
+
+              <div class="flex gap-4 p-5">
+
+                <% if item.product.image.attached? %>
+
+                  <%= image_tag item.product.image,
+                                class: "size-24 shrink-0 rounded-xl border border-black/10 bg-[#f7f7f7] object-contain p-2" %>
+
+                <% end %>
+
+
+                <div class="min-w-0 flex-1">
+
+                  <div class="flex items-start justify-between gap-5">
+
+                    <div>
+
+                      <%= link_to storefront_product_path(
+                                    shop_slug: @shop.slug,
+                                    slug: item.product.slug
+                                  ),
+                                  class: "font-black hover:underline" do %>
+
+                        <%= item.product.name %>
+
+                      <% end %>
+
+
+                      <p class="mt-1 text-sm text-[#8a8a8a]">
+                        <%= item.product.sku %>
+                      </p>
+
+                    </div>
+
+
+                    <p class="font-black">
+                      <%= number_to_currency(
+                            item.product.price * item.quantity,
+                            unit: "₸",
+                            format: "%n %u",
+                            delimiter: " ",
+                            separator: ","
+                          ) %>
+                    </p>
+
+                  </div>
+
+
+                  <div class="mt-5 flex items-center justify-between">
+
+                    <%= form_with url: storefront_cart_item_path(
+                                    shop_slug: @shop.slug,
+                                    id: item.id
+                                  ),
+                                  method: :patch,
+                                  data: {
+                                    controller: "auto-submit"
+                                  },
+                                  class: "flex items-center gap-2" do %>
+
+                      <%= number_field_tag :quantity,
+                                          item.quantity,
+                                          min: 1,
+                                          max: 99,
+                                          data: {
+                                            action: "input->auto-submit#submit"
+                                          },
+                                          class: "
+                                            h-10 w-20
+                                            rounded-xl border border-black/10
+                                            px-3 text-sm
+                                            outline-none
+                                            focus:border-[#008060]
+                                          " %>
+
+                    <% end %>
+
+
+                    <%= button_to "Удалить",
+                                  storefront_cart_item_path(
+                                    shop_slug: @shop.slug,
+                                    id: item.id
+                                  ),
+                                  method: :delete,
+                                  class: "text-xs font-black text-red-600 hover:text-red-700" %>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+        </section>
+
+
+        <!-- TOTAL -->
+
+        <aside>
+
+          <div class="sticky top-6 rounded-2xl border border-black/10 bg-white p-5">
+
+            <h2 class="font-black">
+              Итого
+            </h2>
+
+
+            <div class="mt-5 flex items-center justify-between">
+
+              <span class="text-sm text-[#616161]">
+                Товаров
+              </span>
+
+              <span class="text-sm font-black">
+                <%= @cart.total_quantity %>
+              </span>
+
+            </div>
+
+
+            <div class="mt-4 flex items-center justify-between border-t border-black/10 pt-4">
+
+              <span class="font-black">
+                К оплате
+              </span>
+
+              <span class="text-xl font-black">
+                <%= number_to_currency(
+                      @cart.total_price,
+                      unit: "₸",
+                      format: "%n %u",
+                      delimiter: " ",
+                      separator: ","
+                    ) %>
+              </span>
+
+            </div>
+
+
+            <%= link_to "Оформить заказ",
+              storefront_checkout_path(
+                shop_slug: @shop.slug
+              ),
+              class: "mt-6 inline-flex h-12 w-full items-center justify-center rounded-xl bg-[#303030] px-5 text-sm font-black text-white transition hover:bg-black" %>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+    <% else %>
+
+      <div class="mt-7 rounded-2xl border border-black/10 bg-white px-6 py-16 text-center">
+
+        <h2 class="text-lg font-black">
+          Корзина пустая
+        </h2>
+
+        <p class="mt-2 text-sm text-[#8a8a8a]">
+          Добавьте товары из каталога.
+        </p>
+
+        <%= link_to "Перейти в каталог",
+                    storefront_root_path(
+                      shop_slug: @shop.slug
+                    ),
+                    class: "mt-6 inline-flex h-10 items-center rounded-xl bg-[#303030] px-4 text-sm font-black text-white" %>
+
+      </div>
+
+    <% end %>
+
+  </main>
+
+</div>

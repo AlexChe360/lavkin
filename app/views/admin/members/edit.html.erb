@@ -1,0 +1,65 @@
+<% content_for :title, "Роль сотрудника — Lavkin" %>
+
+<div class="mx-auto max-w-2xl">
+
+  <%= link_to "← Сотрудники",
+              admin_members_path,
+              class: "text-sm font-bold text-[#616161] hover:text-black" %>
+
+
+  <div class="mt-5">
+
+    <h1 class="text-2xl font-black tracking-[-0.04em]">
+      Роль сотрудника
+    </h1>
+
+    <p class="mt-1 text-sm text-[#616161]">
+      <%= @membership.user.email_address %>
+    </p>
+
+  </div>
+
+
+  <section class="mt-7 rounded-2xl border border-black/10 bg-white p-6">
+
+    <%= form_with model: [:admin, @membership],
+                  url: admin_member_path(@membership),
+                  class: "space-y-6" do |form| %>
+
+      <div>
+
+        <%= form.label :role,
+                       "Роль",
+                       class: "block text-sm font-black" %>
+
+        <%= form.select :role,
+                        options_for_select(
+                          [
+                            ["Администратор", "admin"],
+                            ["Менеджер", "manager"],
+                            ["Сотрудник", "staff"]
+                          ],
+                          @membership.role
+                        ),
+                        {},
+                        class: "mt-2 h-11 w-full rounded-xl border border-black/10 bg-white px-3 text-sm" %>
+
+      </div>
+
+
+      <div class="flex justify-end gap-3">
+
+        <%= link_to "Отмена",
+                    admin_members_path,
+                    class: "inline-flex h-10 items-center rounded-xl border border-black/10 px-4 text-sm font-black hover:bg-[#f7f7f7]" %>
+
+        <%= form.submit "Сохранить",
+                        class: "h-10 cursor-pointer rounded-xl bg-[#303030] px-5 text-sm font-black text-white hover:bg-black" %>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+</div>

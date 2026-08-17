@@ -1,0 +1,287 @@
+<% content_for :title, "Остатки — Lavkin" %>
+
+<div>
+
+  <!-- HEADER -->
+
+  <div class="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+
+    <div>
+      <h1 class="text-2xl font-black tracking-[-0.04em]">
+        Остатки
+      </h1>
+
+      <p class="mt-1 text-sm text-[#616161]">
+        Контролируйте наличие товаров магазина
+        <strong class="text-[#303030]">
+          <%= Current.shop.name %>
+        </strong>.
+      </p>
+    </div>
+
+
+    <%= link_to "История движений",
+                admin_inventory_movements_path,
+                class: "inline-flex h-10 items-center justify-center rounded-xl border border-black/10 bg-white px-4 text-sm font-black hover:bg-[#f7f7f7]" %>
+
+  </div>
+
+
+  <% if @locations.empty? %>
+
+    <!-- NO LOCATIONS -->
+
+    <section class="mt-7 rounded-2xl border border-black/10 bg-white px-6 py-14 text-center">
+
+      <div class="mx-auto flex size-12 items-center justify-center rounded-xl bg-[#f1f1f1]">
+        ◇
+      </div>
+
+      <h2 class="mt-4 text-lg font-black">
+        Склад не настроен
+      </h2>
+
+      <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-[#8a8a8a]">
+        Создайте хотя бы один склад или торговую точку,
+        чтобы вести учёт остатков.
+      </p>
+
+    </section>
+
+  <% else %>
+
+    <!-- INVENTORY -->
+
+    <section class="mt-7 overflow-hidden rounded-2xl border border-black/10 bg-white">
+
+
+      <!-- TOOLBAR -->
+
+      <div class="border-b border-black/10 p-4">
+
+        <%= form_with url: admin_inventory_path,
+                      method: :get,
+                      class: "flex flex-col gap-3 lg:flex-row lg:items-center" do |form| %>
+
+          <!-- SEARCH -->
+
+          <div class="relative flex-1">
+
+            <svg
+              class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#8a8a8a]"
+              width="17"
+              height="17"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.3-4.3"/>
+            </svg>
+
+            <%= form.search_field :q,
+                                  value: params[:q],
+                                  placeholder: "Поиск по названию или SKU",
+                                  class: "h-10 w-full rounded-xl border border-black/10 bg-white pl-10 pr-4 text-sm outline-none focus:border-[#008060]" %>
+
+          </div>
+
+
+          <!-- LOCATION -->
+
+          <%= form.select :location_id,
+                          options_from_collection_for_select(
+                            @locations,
+                            :id,
+                            :name,
+                            @location&.id
+                          ),
+                          {},
+                          class: "h-10 min-w-[210px] rounded-xl border border-black/10 bg-white px-3 text-sm font-bold outline-none focus:border-[#008060]",
+                          onchange: "this.form.requestSubmit()" %>
+
+
+          <%= form.submit "Найти",
+                          class: "h-10 cursor-pointer rounded-xl bg-[#303030] px-4 text-sm font-black text-white hover:bg-black" %>
+
+        <% end %>
+
+      </div>
+
+
+      <!-- CURRENT LOCATION -->
+
+      <div class="flex items-center justify-between border-b border-black/10 bg-[#fafafa] px-4 py-3">
+
+        <div>
+
+          <p class="text-[10px] font-black uppercase tracking-[0.1em] text-[#8a8a8a]">
+            Склад
+          </p>
+
+          <p class="mt-1 text-sm font-black">
+            <%= @location.name %>
+          </p>
+
+        </div>
+
+        <p class="text-xs text-[#8a8a8a]">
+          Товаров:
+          <strong class="text-[#303030]">
+            <%= @products.size %>
+          </strong>
+        </p>
+
+      </div>
+
+
+      <!-- TABLE -->
+
+      <div class="overflow-x-auto">
+
+        <table class="w-full min-w-[850px]">
+
+          <thead class="bg-[#f7f7f7]">
+
+            <tr class="border-b border-black/10">
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Товар
+              </th>
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                SKU
+              </th>
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Категория
+              </th>
+
+              <th class="px-4 py-3 text-right text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Остаток
+              </th>
+
+              <th class="w-[140px] px-4 py-3"></th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody class="divide-y divide-black/10">
+
+            <% @products.each do |product| %>
+
+              <% level = @inventory_levels[product.id] %>
+              <% quantity = level&.quantity || 0 %>
+
+              <tr class="transition hover:bg-[#fafafa]">
+
+                <!-- PRODUCT -->
+
+                <td class="px-4 py-3">
+
+                  <%= link_to admin_product_path(product),
+                              class: "flex items-center gap-3" do %>
+
+                    <% if product.image.attached? %>
+
+                      <%= image_tag product.image,
+                                    class: "size-12 shrink-0 rounded-lg border border-black/10 bg-[#f7f7f7] object-contain" %>
+
+                    <% else %>
+
+                      <div class="flex size-12 shrink-0 items-center justify-center rounded-lg border border-black/10 bg-[#f1f1f1] text-[10px] font-black text-[#8a8a8a]">
+                        IMG
+                      </div>
+
+                    <% end %>
+
+
+                    <div>
+
+                      <p class="text-sm font-black text-[#303030]">
+                        <%= product.name %>
+                      </p>
+
+                      <% unless product.active? %>
+                        <p class="mt-1 text-xs text-[#8a8a8a]">
+                          Черновик
+                        </p>
+                      <% end %>
+
+                    </div>
+
+                  <% end %>
+
+                </td>
+
+
+                <!-- SKU -->
+
+                <td class="px-4 py-3 font-mono text-sm text-[#616161]">
+                  <%= product.sku %>
+                </td>
+
+
+                <!-- CATEGORY -->
+
+                <td class="px-4 py-3 text-sm text-[#616161]">
+                  <%= product.category&.name || "—" %>
+                </td>
+
+
+                <!-- QUANTITY -->
+
+                <td class="px-4 py-3 text-right">
+
+                  <span
+                    class="
+                      inline-flex min-w-12 justify-center
+                      rounded-lg px-3 py-2
+                      text-sm font-black
+                      <%= quantity.zero? ?
+                        "bg-red-50 text-red-700" :
+                        quantity <= 5 ?
+                          "bg-amber-50 text-amber-700" :
+                          "bg-[#edf7f2] text-[#006e52]" %>
+                    "
+                  >
+                    <%= quantity %>
+                  </span>
+
+                </td>
+
+
+                <!-- ACTION -->
+
+                <td class="px-4 py-3 text-right">
+
+                  <% if Current.membership&.owner? ||
+                    Current.membership&.admin? %>
+                    <%= link_to "Изменить",
+                              new_admin_inventory_adjustment_path(
+                                product_id: product.id,
+                                location_id: @location.id
+                              ),
+                              class: "inline-flex h-9 items-center justify-center rounded-lg border border-black/10 bg-white px-3 text-xs font-black transition hover:bg-[#f1f1f1]" %>
+                  <% end %>
+
+                </td>
+
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  <% end %>
+
+</div>

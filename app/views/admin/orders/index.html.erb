@@ -1,0 +1,192 @@
+<% content_for :title, "Заказы — Lavkin" %>
+
+<div>
+
+  <div>
+    <h1 class="text-2xl font-black tracking-[-0.04em]">
+      Заказы
+    </h1>
+
+    <p class="mt-1 text-sm text-[#616161]">
+      Заказы магазина
+      <strong class="text-[#303030]">
+        <%= Current.shop.name %>
+      </strong>.
+    </p>
+  </div>
+
+
+  <section class="mt-7 overflow-hidden rounded-2xl border border-black/10 bg-white">
+
+    <% if @orders.any? %>
+
+      <div class="overflow-x-auto">
+
+        <table class="w-full min-w-[900px]">
+
+          <thead class="bg-[#f7f7f7]">
+            <tr class="border-b border-black/10">
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Заказ
+              </th>
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Дата
+              </th>
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Клиент
+              </th>
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Статус
+              </th>
+
+              <th class="px-4 py-3 text-right text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Сумма
+              </th>
+
+            </tr>
+          </thead>
+
+
+          <tbody class="divide-y divide-black/10">
+
+            <% @orders.each do |order| %>
+
+              <tr class="transition hover:bg-[#fafafa]">
+
+                <td class="px-4 py-4">
+
+                  <%= link_to admin_order_path(order),
+                              class: "font-black text-[#303030] hover:underline" do %>
+
+                    <%= order.number %>
+
+                  <% end %>
+
+                </td>
+
+
+                <td class="px-4 py-4 text-sm text-[#616161]">
+                  <%= order.created_at.strftime("%d.%m.%Y %H:%M") %>
+                </td>
+
+
+                <td class="px-4 py-4">
+
+                  <p class="text-sm font-black">
+                    <%= order.customer_name.presence || "—" %>
+                  </p>
+
+                  <% if order.customer_phone.present? %>
+                    <p class="mt-1 text-xs text-[#8a8a8a]">
+                      <%= order.customer_phone %>
+                    </p>
+                  <% end %>
+
+                </td>
+
+
+                <td class="px-4 py-4">
+
+                  <% if order.status == "awaiting_payment" %>
+
+                    <span class="rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-black text-amber-700">
+                      Ожидает оплату
+                    </span>
+
+                  <% elsif order.status == "paid" %>
+
+                    <span class="rounded-full bg-[#e3f1df] px-2.5 py-1 text-[11px] font-black text-[#0a5c36]">
+                      Оплачен
+                    </span>
+
+                  <% elsif order.status == "processing" %>
+
+                    <span class="rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-black text-blue-700">
+                      В обработке
+                    </span>
+
+                  <% elsif order.status == "ready" %>
+
+                    <span class="rounded-full bg-violet-50 px-2.5 py-1 text-[11px] font-black text-violet-700">
+                      Готов
+                    </span>
+
+                  <% elsif order.status == "completed" %>
+
+                    <span class="rounded-full bg-[#eeeeee] px-2.5 py-1 text-[11px] font-black text-[#616161]">
+                      Завершён
+                    </span>
+
+                  <% elsif order.status == "cancelled" %>
+
+                    <span class="rounded-full bg-red-50 px-2.5 py-1 text-[11px] font-black text-red-700">
+                      Отменён
+                    </span>
+
+                  <% else %>
+
+                    <span class="rounded-full bg-[#eeeeee] px-2.5 py-1 text-[11px] font-black text-[#616161]">
+                      <%= order.status %>
+                    </span>
+
+                  <% end %>
+                </td>
+
+
+                <td class="px-4 py-4 text-right text-sm font-black">
+
+                  <%= number_to_currency(
+                        order.total_amount,
+                        unit: "₸",
+                        format: "%n %u",
+                        delimiter: " ",
+                        separator: ","
+                      ) %>
+
+                </td>
+
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <div class="border-t border-black/10 px-4 py-3">
+
+        <p class="text-xs text-[#8a8a8a]">
+          Заказов:
+          <strong class="text-[#303030]">
+            <%= @orders.size %>
+          </strong>
+        </p>
+
+      </div>
+
+    <% else %>
+
+      <div class="px-6 py-16 text-center">
+
+        <h2 class="font-black">
+          Заказов пока нет
+        </h2>
+
+        <p class="mt-2 text-sm text-[#8a8a8a]">
+          Здесь появятся заказы из интернет-магазина.
+        </p>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+</div>

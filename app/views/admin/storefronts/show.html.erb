@@ -1,0 +1,848 @@
+<% content_for :title, "Интернет-магазин — Lavkin" %>
+
+<div>
+
+  <!-- HEADER -->
+
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+
+    <div>
+      <h1 class="text-3xl font-black tracking-[-0.05em]">
+        Интернет-магазин
+      </h1>
+
+      <p class="mt-2 text-sm text-[#616161]">
+        Управляйте публичной витриной магазина
+        <strong class="text-[#303030]">
+          <%= @shop.name %>
+        </strong>.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="mt-7 grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
+
+    <!-- LEFT -->
+
+    <div class="min-w-0 space-y-5">
+
+      <!-- PUBLICATION -->
+
+      <section class="rounded-2xl border border-black/10 bg-white p-6">
+
+        <div class="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+
+          <div>
+            <h2 class="font-black">
+              Витрина
+            </h2>
+
+            <p class="mt-1 text-sm text-[#8a8a8a]">
+              Публичная страница вашего магазина.
+            </p>
+          </div>
+
+
+          <% if @shop.storefront_published? %>
+
+            <span class="
+              inline-flex w-fit items-center
+              rounded-full bg-green-50
+              px-3 py-1
+              text-xs font-black text-green-700
+            ">
+              Опубликован
+            </span>
+
+          <% else %>
+
+            <span class="
+              inline-flex w-fit items-center
+              rounded-full bg-[#eeeeee]
+              px-3 py-1
+              text-xs font-black text-[#616161]
+            ">
+              Не опубликован
+            </span>
+
+          <% end %>
+
+        </div>
+
+
+        <div class="mt-6 rounded-xl bg-[#f7f7f7] p-5">
+
+          <p class="
+            text-xs font-bold uppercase
+            tracking-[0.12em] text-[#8a8a8a]
+          ">
+            Адрес магазина
+          </p>
+
+          <p class="mt-2 break-all font-mono text-sm font-bold text-[#008060]">
+            /store/<%= @shop.slug %>
+          </p>
+
+        </div>
+
+
+        <div class="mt-5 flex flex-wrap gap-3">
+
+          <% if @shop.storefront_published? %>
+
+            <%= link_to "Открыть магазин",
+                        "/store/#{@shop.slug}",
+                        target: "_blank",
+                        class: "
+                          inline-flex h-10 items-center
+                          rounded-xl bg-[#303030]
+                          px-4 text-sm font-black text-white
+                          transition hover:bg-black
+                        " %>
+
+
+            <%= button_to "Снять с публикации",
+                          unpublish_admin_storefront_path,
+                          method: :delete,
+                          data: {
+                            action: "click->confirm#open",
+                            confirm_title: "Снять магазин с публикации?",
+                            confirm_message: "Публичная витрина #{@shop.name} станет недоступна покупателям.",
+                            confirm_text: "Снять с публикации",
+                            confirm_danger: true
+                          },
+                          class: "
+                            h-10 rounded-xl
+                            border border-red-200
+                            bg-white px-4
+                            text-sm font-black text-red-600
+                            transition hover:bg-red-50
+                          " %>
+
+          <% else %>
+
+            <%= button_to "Опубликовать",
+                          publish_admin_storefront_path,
+                          method: :post,
+                          class: "
+                            h-10 rounded-xl
+                            bg-[#303030]
+                            px-4 text-sm font-black text-white
+                            transition hover:bg-black
+                          " %>
+
+          <% end %>
+
+        </div>
+
+      </section>
+
+
+      <!-- SETTINGS FORM -->
+
+      <%= form_with model: @shop,
+                    url: admin_storefront_path,
+                    method: :patch,
+                    class: "space-y-5" do |form| %>
+
+
+        <!-- DESIGN -->
+
+        <section class="rounded-2xl border border-black/10 bg-white p-6">
+
+          <div>
+            <h2 class="font-black">
+              Оформление
+            </h2>
+
+            <p class="mt-1 text-sm text-[#8a8a8a]">
+              Информация и изображения публичной витрины.
+            </p>
+          </div>
+
+
+          <div class="mt-6 space-y-6">
+
+            <!-- NAME -->
+
+            <div>
+
+              <label class="block text-sm font-black">
+                Название
+              </label>
+
+              <input
+                type="text"
+                value="<%= @shop.name %>"
+                disabled
+                class="
+                  mt-2 h-11 w-full
+                  rounded-xl border border-black/10
+                  bg-[#f7f7f7]
+                  px-4 text-sm text-[#616161]
+                "
+              >
+
+              <p class="mt-2 text-xs text-[#8a8a8a]">
+                Название изменяется в настройках магазина.
+              </p>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div>
+
+              <%= form.label :storefront_description,
+                             "Описание витрины",
+                             class: "block text-sm font-black" %>
+
+              <%= form.text_area :storefront_description,
+                                 rows: 4,
+                                 placeholder: "Расскажите покупателям о вашем магазине",
+                                 class: "
+                                   mt-2 w-full resize-none
+                                   rounded-xl border border-black/10
+                                   bg-white
+                                   px-4 py-3 text-sm
+                                   outline-none
+                                   transition
+                                   focus:border-[#008060]
+                                 " %>
+
+            </div>
+
+
+            <!-- LOGO -->
+
+            <div>
+
+              <%= form.label :storefront_logo,
+                             "Логотип",
+                             class: "block text-sm font-black" %>
+
+              <p class="mt-1 text-xs text-[#8a8a8a]">
+                Рекомендуется квадратное изображение.
+              </p>
+
+
+              <% if @shop.storefront_logo.attached? %>
+
+                <div class="mt-3 flex items-center gap-4">
+
+                  <%= image_tag @shop.storefront_logo,
+                                class: "
+                                  size-20 rounded-2xl
+                                  border border-black/10
+                                  object-cover
+                                " %>
+
+                  <div>
+                    <p class="text-sm font-black">
+                      Логотип загружен
+                    </p>
+
+                    <p class="mt-1 text-xs text-[#8a8a8a]">
+                      Выберите новый файл, чтобы заменить его.
+                    </p>
+                  </div>
+
+                </div>
+
+              <% end %>
+
+
+              <%= form.file_field :storefront_logo,
+                                  accept: "image/png,image/jpeg,image/webp",
+                                  class: "
+                                    mt-3 block w-full
+                                    rounded-xl border border-black/10
+                                    bg-white
+                                    px-3 py-3
+                                    text-sm
+                                  " %>
+
+            </div>
+
+
+            <!-- COVER -->
+
+            <div>
+
+              <%= form.label :storefront_cover,
+                             "Обложка",
+                             class: "block text-sm font-black" %>
+
+              <p class="mt-1 text-xs text-[#8a8a8a]">
+                Широкое изображение в верхней части витрины.
+              </p>
+
+
+              <% if @shop.storefront_cover.attached? %>
+
+                <div class="
+                  mt-3 overflow-hidden
+                  rounded-2xl border border-black/10
+                ">
+
+                  <%= image_tag @shop.storefront_cover,
+                                class: "h-40 w-full object-cover" %>
+
+                </div>
+
+              <% end %>
+
+
+              <%= form.file_field :storefront_cover,
+                                  accept: "image/png,image/jpeg,image/webp",
+                                  class: "
+                                    mt-3 block w-full
+                                    rounded-xl border border-black/10
+                                    bg-white
+                                    px-3 py-3
+                                    text-sm
+                                  " %>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ORDERS -->
+
+        <section class="rounded-2xl border border-black/10 bg-white p-6">
+
+          <div>
+
+            <h2 class="font-black">
+              Приём заказов
+            </h2>
+
+            <p class="mt-1 text-sm text-[#8a8a8a]">
+              Управляйте оформлением заказов через интернет-магазин.
+            </p>
+
+          </div>
+
+
+          <div class="mt-6 space-y-3">
+
+            <!-- ACCEPT ORDERS -->
+
+            <label class="
+              flex cursor-pointer items-center
+              justify-between gap-5
+              rounded-xl border border-black/10
+              p-4
+              transition hover:bg-[#fafafa]
+            ">
+
+              <div>
+
+                <p class="text-sm font-black">
+                  Принимать заказы
+                </p>
+
+                <p class="mt-1 text-xs text-[#8a8a8a]">
+                  Покупатели смогут добавлять товары в корзину
+                  и оформлять заказ.
+                </p>
+
+              </div>
+
+              <%= form.check_box :storefront_accept_orders,
+                                 class: "
+                                   size-5 shrink-0 rounded
+                                   border-black/20
+                                   text-[#008060]
+                                 " %>
+
+            </label>
+
+
+            <!-- PICKUP -->
+
+            <label class="
+              flex cursor-pointer items-center
+              justify-between gap-5
+              rounded-xl border border-black/10
+              p-4
+              transition hover:bg-[#fafafa]
+            ">
+
+              <div>
+
+                <p class="text-sm font-black">
+                  Самовывоз
+                </p>
+
+                <p class="mt-1 text-xs text-[#8a8a8a]">
+                  Покупатель сможет оформить заказ
+                  и забрать его самостоятельно.
+                </p>
+
+              </div>
+
+              <%= form.check_box :storefront_pickup_enabled,
+                                 class: "
+                                   size-5 shrink-0 rounded
+                                   border-black/20
+                                   text-[#008060]
+                                 " %>
+
+            </label>
+
+
+            <!-- DELIVERY -->
+
+            <label class="
+              flex cursor-pointer items-center
+              justify-between gap-5
+              rounded-xl border border-black/10
+              p-4
+              transition hover:bg-[#fafafa]
+            ">
+
+              <div>
+
+                <p class="text-sm font-black">
+                  Доставка
+                </p>
+
+                <p class="mt-1 text-xs text-[#8a8a8a]">
+                  Покупатель сможет выбрать доставку
+                  при оформлении заказа.
+                </p>
+
+              </div>
+
+              <%= form.check_box :storefront_delivery_enabled,
+                                 class: "
+                                   size-5 shrink-0 rounded
+                                   border-black/20
+                                   text-[#008060]
+                                 " %>
+
+            </label>
+
+          </div>
+
+        </section>
+
+
+        <!-- CATALOG -->
+
+        <section class="rounded-2xl border border-black/10 bg-white p-6">
+
+          <div>
+
+            <h2 class="font-black">
+              Каталог
+            </h2>
+
+            <p class="mt-1 text-sm text-[#8a8a8a]">
+              Настройте отображение товаров на витрине.
+            </p>
+
+          </div>
+
+
+          <div class="mt-6 space-y-3">
+
+            <label class="
+              flex cursor-pointer items-center
+              justify-between gap-5
+              rounded-xl border border-black/10
+              p-4
+              transition hover:bg-[#fafafa]
+            ">
+
+              <div>
+
+                <p class="text-sm font-black">
+                  Показывать товары без остатка
+                </p>
+
+                <p class="mt-1 text-xs text-[#8a8a8a]">
+                  Товары с нулевым остатком будут видны покупателям.
+                </p>
+
+              </div>
+
+
+              <%= form.check_box :storefront_show_out_of_stock,
+                                 class: "
+                                   size-5 shrink-0 rounded
+                                   border-black/20
+                                   text-[#008060]
+                                 " %>
+
+            </label>
+
+          </div>
+
+
+          <div class="
+            mt-5 divide-y divide-black/10
+            overflow-hidden rounded-xl
+            border border-black/10
+          ">
+
+            <div class="flex items-center justify-between gap-4 p-4">
+
+              <div>
+
+                <p class="text-sm font-black">
+                  Товары
+                </p>
+
+                <p class="mt-1 text-xs text-[#8a8a8a]">
+                  Используется текущий каталог магазина.
+                </p>
+
+              </div>
+
+              <span class="
+                rounded-full bg-[#e3f1df]
+                px-3 py-1
+                text-xs font-black text-[#0a5c36]
+              ">
+                Готово
+              </span>
+
+            </div>
+
+
+            <div class="flex items-center justify-between gap-4 p-4">
+
+              <div>
+
+                <p class="text-sm font-black">
+                  Категории
+                </p>
+
+                <p class="mt-1 text-xs text-[#8a8a8a]">
+                  Используются для навигации по каталогу.
+                </p>
+
+              </div>
+
+              <span class="
+                rounded-full bg-[#e3f1df]
+                px-3 py-1
+                text-xs font-black text-[#0a5c36]
+              ">
+                Готово
+              </span>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- SAVE -->
+
+        <div class="
+          sticky bottom-4 z-20
+          flex items-center justify-between gap-4
+          rounded-2xl border border-black/10
+          bg-white/95
+          p-4 shadow-lg backdrop-blur
+        ">
+
+          <p class="hidden text-sm text-[#616161] sm:block">
+            Сохраните изменения настроек витрины.
+          </p>
+
+          <%= form.submit "Сохранить изменения",
+                          class: "
+                            ml-auto h-10 cursor-pointer
+                            rounded-xl bg-[#303030]
+                            px-5 text-sm font-black text-white
+                            transition hover:bg-black
+                          " %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+    <!-- RIGHT -->
+
+    <aside class="space-y-5">
+
+      <!-- PREVIEW -->
+
+      <section class="
+        rounded-2xl border border-black/10
+        bg-white p-5
+        xl:sticky xl:top-20
+      ">
+
+        <div class="flex items-center justify-between gap-3">
+
+          <p class="
+            text-xs font-black uppercase
+            tracking-[0.12em] text-[#8a8a8a]
+          ">
+            Предпросмотр
+          </p>
+
+
+          <% if @shop.storefront_published? %>
+
+            <span class="size-2 rounded-full bg-green-500"></span>
+
+          <% else %>
+
+            <span class="size-2 rounded-full bg-[#bdbdbd]"></span>
+
+          <% end %>
+
+        </div>
+
+
+        <div class="
+          mt-5 overflow-hidden
+          rounded-2xl border border-black/10
+          bg-white
+        ">
+
+          <!-- COVER -->
+
+          <% if @shop.storefront_cover.attached? %>
+
+            <%= image_tag @shop.storefront_cover,
+                          class: "h-28 w-full object-cover" %>
+
+          <% else %>
+
+            <div class="h-28 bg-[#303030]"></div>
+
+          <% end %>
+
+
+          <div class="p-5">
+
+            <!-- LOGO -->
+
+            <% if @shop.storefront_logo.attached? %>
+
+              <%= image_tag @shop.storefront_logo,
+                            class: "
+                              -mt-11 size-16
+                              rounded-2xl
+                              border-4 border-white
+                              bg-white object-cover
+                            " %>
+
+            <% else %>
+
+              <div class="
+                -mt-11 flex size-16
+                items-center justify-center
+                rounded-2xl
+                border-4 border-white
+                bg-[#eeeeee]
+                text-lg font-black
+              ">
+                <%= @shop.name.first.upcase %>
+              </div>
+
+            <% end %>
+
+
+            <h3 class="mt-4 text-lg font-black">
+              <%= @shop.name %>
+            </h3>
+
+
+            <% description =
+                 @shop.storefront_description
+                   .to_s
+                   .strip %>
+
+            <p class="
+              mt-1 line-clamp-3
+              text-sm leading-5 text-[#8a8a8a]
+            ">
+              <%= description.present? ?
+                    description :
+                    "Описание магазина пока не добавлено." %>
+            </p>
+
+
+            <!-- CATEGORIES MOCK -->
+
+            <div class="mt-5 flex gap-2">
+
+              <span class="h-7 w-16 rounded-full bg-[#303030]"></span>
+
+              <span class="h-7 w-20 rounded-full bg-[#eeeeee]"></span>
+
+              <span class="h-7 w-14 rounded-full bg-[#eeeeee]"></span>
+
+            </div>
+
+
+            <!-- PRODUCTS MOCK -->
+
+            <div class="mt-5 grid grid-cols-2 gap-3">
+
+              <% 4.times do %>
+
+                <div>
+
+                  <div class="
+                    aspect-square
+                    rounded-xl bg-[#f1f1f1]
+                  "></div>
+
+                  <div class="
+                    mt-2 h-2 w-3/4
+                    rounded bg-[#eeeeee]
+                  "></div>
+
+                  <div class="
+                    mt-2 h-2 w-1/2
+                    rounded bg-[#eeeeee]
+                  "></div>
+
+                </div>
+
+              <% end %>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <% if @shop.storefront_published? %>
+
+          <%= link_to "Открыть витрину",
+                      "/store/#{@shop.slug}",
+                      target: "_blank",
+                      class: "
+                        mt-4 flex h-10 w-full
+                        items-center justify-center
+                        rounded-xl
+                        border border-black/10
+                        text-sm font-black
+                        transition hover:bg-[#f7f7f7]
+                      " %>
+
+        <% end %>
+
+      </section>
+
+
+      <!-- STATUS -->
+
+      <section class="rounded-2xl border border-black/10 bg-white p-5">
+
+        <h2 class="font-black">
+          Состояние магазина
+        </h2>
+
+
+        <div class="mt-5 space-y-4">
+
+          <!-- PUBLICATION -->
+
+          <div class="flex items-center justify-between gap-4">
+
+            <span class="text-sm font-bold">
+              Витрина
+            </span>
+
+            <% if @shop.storefront_published? %>
+
+              <span class="text-xs font-black text-green-700">
+                Опубликована
+              </span>
+
+            <% else %>
+
+              <span class="text-xs font-black text-[#8a8a8a]">
+                Не опубликована
+              </span>
+
+            <% end %>
+
+          </div>
+
+
+          <!-- ORDERS -->
+
+          <div class="flex items-center justify-between gap-4">
+
+            <span class="text-sm font-bold">
+              Заказы
+            </span>
+
+            <% if @shop.storefront_accept_orders? %>
+
+              <span class="text-xs font-black text-green-700">
+                Принимаются
+              </span>
+
+            <% else %>
+
+              <span class="text-xs font-black text-[#8a8a8a]">
+                Отключены
+              </span>
+
+            <% end %>
+
+          </div>
+
+
+          <!-- PICKUP -->
+
+          <div class="flex items-center justify-between gap-4">
+
+            <span class="text-sm font-bold">
+              Самовывоз
+            </span>
+
+            <span class="text-xs font-black text-[#8a8a8a]">
+              <%= @shop.storefront_pickup_enabled? ? "Включён" : "Выключен" %>
+            </span>
+
+          </div>
+
+
+          <!-- DELIVERY -->
+
+          <div class="flex items-center justify-between gap-4">
+
+            <span class="text-sm font-bold">
+              Доставка
+            </span>
+
+            <span class="text-xs font-black text-[#8a8a8a]">
+              <%= @shop.storefront_delivery_enabled? ? "Включена" : "Выключена" %>
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </aside>
+
+  </div>
+
+</div>

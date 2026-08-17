@@ -1,0 +1,304 @@
+<% content_for :title, "Движения склада — Lavkin" %>
+
+<div>
+
+  <div class="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+
+    <div>
+      <h1 class="text-2xl font-black tracking-[-0.04em]">
+        Движения склада
+      </h1>
+
+      <p class="mt-1 text-sm text-[#616161]">
+        История изменений остатков магазина
+        <strong class="text-[#303030]">
+          <%= Current.shop.name %>
+        </strong>.
+      </p>
+    </div>
+
+
+    <%= link_to "← Остатки",
+                admin_inventory_path,
+                class: "inline-flex h-10 items-center rounded-xl border border-black/10 bg-white px-4 text-sm font-black hover:bg-[#f7f7f7]" %>
+
+  </div>
+
+
+  <section class="mt-7 overflow-hidden rounded-2xl border border-black/10 bg-white">
+
+    <!-- FILTERS -->
+
+    <div class="border-b border-black/10 p-4">
+
+      <%= form_with url: admin_inventory_movements_path,
+                    method: :get,
+                    class: "grid gap-3 lg:grid-cols-[1fr_220px_190px_auto]" do |form| %>
+
+        <div class="relative">
+
+          <svg
+            class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#8a8a8a]"
+            width="17"
+            height="17"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+
+          <%= form.search_field :q,
+                                value: params[:q],
+                                placeholder: "Поиск по товару или SKU",
+                                class: "h-10 w-full rounded-xl border border-black/10 bg-white pl-10 pr-4 text-sm outline-none focus:border-[#008060]" %>
+
+        </div>
+
+
+        <%= form.select :location_id,
+                        options_for_select(
+                          [
+                            ["Все склады", ""]
+                          ] +
+                          @locations.map {
+                            |location|
+                            [
+                              location.name,
+                              location.id
+                            ]
+                          },
+                          params[:location_id]
+                        ),
+                        {},
+                        class: "h-10 rounded-xl border border-black/10 bg-white px-3 text-sm font-bold outline-none focus:border-[#008060]" %>
+
+
+        <%= form.select :operation,
+                        options_for_select(
+                          [
+                            ["Все операции", ""],
+                            ["Приход", "receipt"],
+                            ["Списание", "write_off"],
+                            ["Продажа", "sale"],
+                            ["Возврат", "return"],
+                            ["Перемещение со склада", "transfer_out"],
+                            ["Перемещение на склад", "transfer_in"],
+                            ["Корректировка", "adjustment"]
+                          ],
+                          params[:operation]
+                        ),
+                        {},
+                        class: "h-10 rounded-xl border border-black/10 bg-white px-3 text-sm font-bold outline-none focus:border-[#008060]" %>
+
+
+        <%= form.submit "Найти",
+                        class: "h-10 cursor-pointer rounded-xl bg-[#303030] px-4 text-sm font-black text-white hover:bg-black" %>
+
+      <% end %>
+
+    </div>
+
+
+    <% if @movements.any? %>
+
+      <div class="overflow-x-auto">
+
+        <table class="w-full min-w-[1000px]">
+
+          <thead class="bg-[#f7f7f7]">
+
+            <tr class="border-b border-black/10">
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Дата
+              </th>
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Товар
+              </th>
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Склад
+              </th>
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Операция
+              </th>
+
+              <th class="px-4 py-3 text-right text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Изменение
+              </th>
+
+              <th class="px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.08em] text-[#8a8a8a]">
+                Комментарий
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody class="divide-y divide-black/10">
+
+            <% @movements.each do |movement| %>
+
+              <tr class="transition hover:bg-[#fafafa]">
+
+                <td class="whitespace-nowrap px-4 py-3 text-sm text-[#616161]">
+                  <%= movement.created_at.strftime("%d.%m.%Y %H:%M") %>
+                </td>
+
+
+                <td class="px-4 py-3">
+
+                  <%= link_to admin_product_path(movement.product),
+                              class: "block" do %>
+
+                    <p class="text-sm font-black text-[#303030]">
+                      <%= movement.product.name %>
+                    </p>
+
+                    <p class="mt-1 font-mono text-xs text-[#8a8a8a]">
+                      <%= movement.product.sku %>
+                    </p>
+
+                  <% end %>
+
+                </td>
+
+
+                <td class="px-4 py-3 text-sm text-[#616161]">
+                  <%= movement.location.name %>
+                </td>
+
+
+                <td class="px-4 py-3">
+
+                  <% if movement.operation == "receipt" %>
+
+                    <span class="inline-flex rounded-full bg-green-50 px-2.5 py-1 text-[11px] font-black text-green-700">
+                      Приход
+                    </span>
+
+                  <% elsif movement.operation == "write_off" %>
+
+                    <span class="inline-flex rounded-full bg-red-50 px-2.5 py-1 text-[11px] font-black text-red-700">
+                      Списание
+                    </span>
+
+                  <% elsif movement.operation == "transfer_out" %>
+
+                    <span class="inline-flex rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-black text-blue-700">
+                      Перемещение →
+                    </span>
+
+                  <% elsif movement.operation == "transfer_in" %>
+
+                    <span class="inline-flex rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-black text-blue-700">
+                      ← Перемещение
+                    </span>
+
+                  <% elsif movement.operation == "sale" %>
+
+                    <span class="inline-flex rounded-full bg-violet-50 px-2.5 py-1 text-[11px] font-black text-violet-700">
+                      Продажа
+                    </span>
+
+                  <% elsif movement.operation == "return" %>
+
+                    <span class="inline-flex rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-black text-emerald-700">
+                      Возврат
+                    </span>
+
+                  <% elsif movement.operation == "adjustment" %>
+
+                    <span class="inline-flex rounded-full bg-[#eeeeee] px-2.5 py-1 text-[11px] font-black text-[#616161]">
+                      Корректировка
+                    </span>
+
+                  <% else %>
+
+                    <span class="inline-flex rounded-full bg-[#eeeeee] px-2.5 py-1 text-[11px] font-black text-[#616161]">
+                      <%= movement.operation %>
+                    </span>
+
+                  <% end %>
+                </td>
+
+
+                <td class="px-4 py-3 text-right">
+
+                  <span
+                    class="
+                      text-sm font-black
+                      <%= movement.quantity_change.positive? ?
+                            "text-[#008060]" :
+                            "text-red-600" %>
+                    "
+                  >
+                    <%= movement.quantity_change.positive? ? "+" : "" %><%= movement.quantity_change %>
+                  </span>
+
+                </td>
+
+
+                <td class="max-w-[320px] px-4 py-3 text-sm text-[#616161]">
+
+                  <% if movement.comment.present? %>
+                    <%= movement.comment %>
+                  <% else %>
+                    <span class="text-[#b0b0b0]">
+                      —
+                    </span>
+                  <% end %>
+
+                </td>
+
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <div class="border-t border-black/10 px-4 py-3">
+
+        <p class="text-xs text-[#8a8a8a]">
+          Операций:
+          <strong class="text-[#303030]">
+            <%= @movements.size %>
+          </strong>
+        </p>
+
+      </div>
+
+    <% else %>
+
+      <div class="px-6 py-16 text-center">
+
+        <div class="mx-auto flex size-12 items-center justify-center rounded-xl bg-[#f1f1f1]">
+          ↔
+        </div>
+
+        <h2 class="mt-4 font-black">
+          Движений пока нет
+        </h2>
+
+        <p class="mt-2 text-sm text-[#8a8a8a]">
+          Здесь появится история прихода, списаний и корректировок.
+        </p>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+</div>

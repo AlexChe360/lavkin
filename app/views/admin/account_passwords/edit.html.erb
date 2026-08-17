@@ -1,0 +1,95 @@
+<% content_for :title, "Безопасность — Lavkin" %>
+
+<div class="mx-auto max-w-2xl">
+
+  <%= link_to "← Мой профиль",
+              admin_profile_path,
+              class: "text-sm font-bold text-[#616161] hover:text-black" %>
+
+  <div class="mt-5">
+    <h1 class="text-2xl font-black tracking-[-0.04em]">
+      Безопасность
+    </h1>
+
+    <p class="mt-1 text-sm text-[#616161]">
+      Измените пароль вашего аккаунта.
+    </p>
+  </div>
+
+
+  <section class="mt-7 rounded-2xl border border-black/10 bg-white p-6">
+
+    <%= form_with url: admin_account_password_path,
+                  method: :patch,
+                  class: "space-y-5" do %>
+
+      <% if @user.errors.any? %>
+
+        <div class="rounded-xl border border-red-200 bg-red-50 p-4">
+
+          <% @user.errors.full_messages.each do |message| %>
+            <p class="text-sm font-bold text-red-700">
+              <%= message %>
+            </p>
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+
+      <div>
+        <%= label_tag :current_password,
+                      "Текущий пароль",
+                      class: "block text-sm font-black" %>
+
+        <%= password_field_tag :current_password,
+                               nil,
+                               required: true,
+                               autocomplete: "current-password",
+                               class: "mt-2 h-11 w-full rounded-xl border border-black/10 px-4 text-sm outline-none focus:border-[#008060]" %>
+      </div>
+
+
+      <div>
+        <%= label_tag "user[password]",
+                      "Новый пароль",
+                      class: "block text-sm font-black" %>
+
+        <%= password_field_tag "user[password]",
+                               nil,
+                               required: true,
+                               autocomplete: "new-password",
+                               class: "mt-2 h-11 w-full rounded-xl border border-black/10 px-4 text-sm outline-none focus:border-[#008060]" %>
+      </div>
+
+
+      <div>
+        <%= label_tag "user[password_confirmation]",
+                      "Повторите новый пароль",
+                      class: "block text-sm font-black" %>
+
+        <%= password_field_tag "user[password_confirmation]",
+                               nil,
+                               required: true,
+                               autocomplete: "new-password",
+                               class: "mt-2 h-11 w-full rounded-xl border border-black/10 px-4 text-sm outline-none focus:border-[#008060]" %>
+      </div>
+
+
+      <div class="flex justify-end gap-3 border-t border-black/10 pt-5">
+
+        <%= link_to "Отмена",
+                    admin_profile_path,
+                    class: "inline-flex h-10 items-center rounded-xl border border-black/10 px-4 text-sm font-black hover:bg-[#f7f7f7]" %>
+
+        <%= submit_tag "Изменить пароль",
+                       class: "h-10 cursor-pointer rounded-xl bg-[#303030] px-5 text-sm font-black text-white hover:bg-black" %>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+</div>

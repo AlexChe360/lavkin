@@ -1,0 +1,81 @@
+<% content_for :title, "#{@transfer.number} — Lavkin" %>
+
+<div>
+
+  <%= link_to "← Перемещения",
+              admin_stock_transfers_path,
+              class: "text-sm font-bold text-[#616161] hover:text-black" %>
+
+  <div class="mt-5 flex items-start justify-between gap-6">
+
+    <div>
+
+      <h1 class="text-2xl font-black">
+        <%= @transfer.number %>
+      </h1>
+
+      <p class="mt-2 text-sm text-[#616161]">
+        <%= @transfer.source_location.name %>
+        →
+        <%= @transfer.destination_location.name %>
+      </p>
+
+    </div>
+
+
+    <% if @transfer.status == "draft" %>
+
+      <%= button_to "Выполнить перемещение",
+              complete_admin_stock_transfer_path(@transfer),
+              method: :post,
+              data: {
+                action: "click->confirm#open",
+                confirm_title: "Выполнить перемещение?",
+                confirm_message: "Остатки будут списаны со склада «#{@transfer.source_location.name}» и зачислены на «#{@transfer.destination_location.name}».",
+                confirm_text: "Выполнить",
+                confirm_danger: false
+              },
+              class: "h-10 rounded-xl bg-[#303030] px-4 text-sm font-black text-white" %>
+
+    <% else %>
+
+      <span class="rounded-full bg-[#e3f1df] px-3 py-1.5 text-xs font-black text-[#0a5c36]">
+        Выполнено
+      </span>
+
+    <% end %>
+
+  </div>
+
+
+  <section class="mt-7 overflow-hidden rounded-2xl border border-black/10 bg-white">
+
+    <div class="divide-y divide-black/10">
+
+      <% @items.each do |item| %>
+
+        <div class="flex items-center justify-between px-5 py-4">
+
+          <div>
+            <p class="text-sm font-black">
+              <%= item.product.name %>
+            </p>
+
+            <p class="mt-1 font-mono text-xs text-[#8a8a8a]">
+              <%= item.product.sku %>
+            </p>
+          </div>
+
+          <p class="text-lg font-black">
+            <%= item.quantity %>
+          </p>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </section>
+
+</div>

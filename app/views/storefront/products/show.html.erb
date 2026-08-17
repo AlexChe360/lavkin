@@ -1,0 +1,154 @@
+<% content_for :title, "#{@product.name} — #{@shop.name}" %>
+
+<div class="min-h-screen">
+
+  <header class="border-b border-black/10 bg-white">
+
+    <div class="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 sm:px-6 lg:px-8">
+
+      <%= link_to storefront_root_path(@shop.slug),
+                  class: "text-lg font-black" do %>
+        <%= @shop.name %>
+      <% end %>
+
+      <button
+        type="button"
+        class="h-10 rounded-xl bg-[#303030] px-4 text-sm font-black text-white"
+      >
+        Корзина
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <main class="mx-auto max-w-[1200px] px-5 py-8 sm:px-6 lg:px-8">
+
+    <%= link_to "← Назад в каталог",
+                storefront_root_path(@shop.slug),
+                class: "text-sm font-bold text-[#616161] hover:text-black" %>
+
+
+    <div class="mt-6 grid gap-8 lg:grid-cols-2">
+
+      <!-- IMAGE -->
+
+      <div class="overflow-hidden rounded-3xl border border-black/10 bg-white">
+
+        <div class="aspect-square bg-[#f1f1f1]">
+
+          <% if @product.image.attached? %>
+
+            <%= image_tag @product.image,
+                          class: "h-full w-full object-contain p-10" %>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+
+      <!-- INFO -->
+
+      <div class="py-2">
+
+        <% if @product.category.present? %>
+
+          <p class="text-sm font-black text-[#008060]">
+            <%= @product.category.name %>
+          </p>
+
+        <% end %>
+
+        <h1 class="mt-3 text-4xl font-black tracking-[-0.055em]">
+          <%= @product.name %>
+        </h1>
+
+
+        <div class="mt-5 flex items-center gap-3">
+
+          <p class="text-2xl font-black">
+            <%= number_to_currency(
+                  @product.price,
+                  unit: "₸",
+                  format: "%n %u",
+                  delimiter: " ",
+                  separator: ","
+                ) %>
+          </p>
+
+          <% if @product.compare_at_price.present? &&
+                @product.compare_at_price > @product.price %>
+
+            <p class="text-sm text-[#8a8a8a] line-through">
+              <%= number_to_currency(
+                    @product.compare_at_price,
+                    unit: "₸",
+                    format: "%n %u",
+                    delimiter: " ",
+                    separator: ","
+                  ) %>
+            </p>
+
+          <% end %>
+
+        </div>
+
+
+        <% if @product.description.present? %>
+
+          <div class="mt-7 text-sm leading-7 text-[#616161]">
+            <%= @product.description %>
+          </div>
+
+        <% end %>
+
+
+        <div class="mt-8 border-t border-black/10 pt-6">
+
+          <% if @total_quantity.positive? %>
+
+            <p class="text-sm font-bold text-[#008060]">
+              В наличии
+            </p>
+
+            <%= button_to storefront_cart_items_path(
+                            shop_slug: @shop.slug
+                          ),
+                          params: {
+                            product_id: @product.id
+                          },
+                          method: :post,
+                          class: "mt-4 h-12 w-full rounded-xl bg-[#303030] px-6 text-sm font-black text-white transition hover:bg-black" do %>
+
+              Добавить в корзину
+
+            <% end %>
+
+          <% else %>
+
+            <p class="text-sm font-bold text-red-600">
+              Нет в наличии
+            </p>
+
+            <button
+              type="button"
+              disabled
+              class="mt-4 h-12 w-full cursor-not-allowed rounded-xl bg-[#e5e5e5] px-6 text-sm font-black text-[#8a8a8a]"
+            >
+              Нет в наличии
+            </button>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>

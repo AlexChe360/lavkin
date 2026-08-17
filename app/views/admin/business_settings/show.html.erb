@@ -1,0 +1,1025 @@
+<% content_for :title, "Настройки бизнеса — Lavkin" %>
+
+<div class="mx-auto max-w-4xl">
+
+  <!-- HEADER -->
+
+  <div>
+
+    <p class="
+      text-xs font-black uppercase
+      tracking-[0.14em]
+      text-[#8a8a8a]
+    ">
+      Бизнес
+    </p>
+
+    <h1 class="
+      mt-2 text-3xl font-black
+      tracking-[-0.05em]
+    ">
+      Настройки бизнеса
+    </h1>
+
+    <p class="mt-2 text-sm text-[#616161]">
+      Управляйте основной информацией, юридическими данными и параметрами бизнеса.
+    </p>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- ACCOUNT SETTINGS                                          -->
+  <!-- ========================================================= -->
+
+  <%= form_with model: @account,
+                url: admin_business_settings_path,
+                method: :patch,
+                class: "mt-7 space-y-5" do |form| %>
+
+
+    <% if @account.errors.any? %>
+
+      <div class="
+        rounded-2xl
+        border border-red-200
+        bg-red-50
+        p-5
+      ">
+
+        <p class="text-sm font-black text-red-700">
+          Не удалось сохранить настройки
+        </p>
+
+        <ul class="mt-2 list-disc space-y-1 pl-5">
+
+          <% @account.errors.full_messages.each do |message| %>
+
+            <li class="text-sm text-red-600">
+              <%= message %>
+            </li>
+
+          <% end %>
+
+        </ul>
+
+      </div>
+
+    <% end %>
+
+
+    <!-- GENERAL -->
+
+    <section class="
+      rounded-2xl
+      border border-black/10
+      bg-white
+      p-6
+    ">
+
+      <h2 class="font-black">
+        Общая информация
+      </h2>
+
+      <p class="mt-1 text-sm text-[#8a8a8a]">
+        Основные данные вашего бизнеса в Lavkin.
+      </p>
+
+
+      <div class="mt-6 space-y-5">
+
+        <!-- NAME -->
+
+        <div>
+
+          <%= form.label :name,
+                         "Название бизнеса",
+                         class: "block text-sm font-black" %>
+
+          <%= form.text_field :name,
+                              required: true,
+                              placeholder: "Coffee Group",
+                              class: "
+                                mt-2 h-11 w-full
+                                rounded-xl
+                                border border-black/10
+                                bg-white
+                                px-4 text-sm
+                                outline-none
+                                transition
+                                focus:border-[#008060]
+                                focus:ring-2
+                                focus:ring-[#008060]/10
+                              " %>
+
+          <p class="mt-2 text-xs text-[#8a8a8a]">
+            Отображается в административной панели и используется как название бизнес-пространства.
+          </p>
+
+        </div>
+
+
+        <!-- EMAIL -->
+
+        <div>
+
+          <%= form.label :email,
+                         "Email бизнеса",
+                         class: "block text-sm font-black" %>
+
+          <%= form.email_field :email,
+                               autocomplete: "email",
+                               placeholder: "hello@coffee.kz",
+                               class: "
+                                 mt-2 h-11 w-full
+                                 rounded-xl
+                                 border border-black/10
+                                 bg-white
+                                 px-4 text-sm
+                                 outline-none
+                                 transition
+                                 focus:border-[#008060]
+                                 focus:ring-2
+                                 focus:ring-[#008060]/10
+                               " %>
+
+        </div>
+
+
+        <!-- PHONE -->
+
+        <div>
+
+          <%= form.label :phone,
+                         "Телефон",
+                         class: "block text-sm font-black" %>
+
+          <%= form.telephone_field :phone,
+                                   autocomplete: "tel",
+                                   placeholder: "+7 (707) 000-00-00",
+                                   data: {
+                                     controller: "phone-mask",
+                                     action: "input->phone-mask#format"
+                                   },
+                                   class: "
+                                     mt-2 h-11 w-full
+                                     rounded-xl
+                                     border border-black/10
+                                     bg-white
+                                     px-4 text-sm
+                                     outline-none
+                                     transition
+                                     focus:border-[#008060]
+                                     focus:ring-2
+                                     focus:ring-[#008060]/10
+                                   " %>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- REGIONAL -->
+
+    <section class="
+      rounded-2xl
+      border border-black/10
+      bg-white
+      p-6
+    ">
+
+      <h2 class="font-black">
+        Региональные настройки
+      </h2>
+
+      <p class="mt-1 text-sm text-[#8a8a8a]">
+        Используются в заказах, отчётах и финансовых данных.
+      </p>
+
+
+      <div class="mt-6 grid gap-5 sm:grid-cols-2">
+
+        <!-- TIMEZONE -->
+
+        <div>
+
+          <%= form.label :timezone,
+                         "Часовой пояс",
+                         class: "block text-sm font-black" %>
+
+          <%= form.select :timezone,
+                [
+                  ["Казахстан — UTC+5", "Asia/Almaty"],
+                  ["Ташкент — UTC+5", "Asia/Tashkent"],
+                  ["Дубай — UTC+4", "Asia/Dubai"]
+                ],
+                {},
+                class: "
+                  mt-2 h-11 w-full
+                  rounded-xl
+                  border border-black/10
+                  bg-white
+                  px-3 text-sm
+                  outline-none
+                  focus:border-[#008060]
+                " %>
+
+        </div>
+
+
+        <!-- CURRENCY -->
+
+        <div>
+
+          <%= form.label :currency,
+                         "Валюта",
+                         class: "block text-sm font-black" %>
+
+          <%= form.select :currency,
+                          [
+                            ["Казахстанский тенге — ₸", "KZT"],
+                            ["Доллар США — $", "USD"],
+                            ["Евро — €", "EUR"]
+                          ],
+                          {},
+                          class: "
+                            mt-2 h-11 w-full
+                            rounded-xl
+                            border border-black/10
+                            bg-white
+                            px-3 text-sm
+                            outline-none
+                            focus:border-[#008060]
+                          " %>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SAVE ACCOUNT -->
+
+    <div class="
+      flex items-center justify-end
+      rounded-2xl
+      border border-black/10
+      bg-white
+      p-4
+    ">
+
+      <%= form.submit "Сохранить основные настройки",
+                      class: "
+                        h-10 cursor-pointer
+                        rounded-xl
+                        bg-[#303030]
+                        px-5
+                        text-sm font-black
+                        text-white
+                        transition
+                        hover:bg-black
+                      " %>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- ========================================================= -->
+  <!-- LEGAL PROFILE                                             -->
+  <!-- ========================================================= -->
+
+  <section
+    id="legal"
+    class="
+      mt-5
+      rounded-2xl
+      border border-black/10
+      bg-white
+      p-6
+    "
+  >
+
+    <div class="
+      flex flex-col gap-4
+      sm:flex-row
+      sm:items-start
+      sm:justify-between
+    ">
+
+      <div>
+
+        <h2 class="font-black">
+          Юридические данные
+        </h2>
+
+        <p class="mt-1 max-w-2xl text-sm leading-6 text-[#8a8a8a]">
+          Реквизиты бизнеса для договоров и подключения платёжных сервисов.
+        </p>
+
+      </div>
+
+
+      <% if @legal_profile.complete_for_payments? %>
+
+        <span class="
+          inline-flex w-fit items-center
+          rounded-full
+          bg-green-50
+          px-3 py-1
+          text-xs font-black
+          text-green-700
+        ">
+          Заполнено
+        </span>
+
+      <% else %>
+
+        <span class="
+          inline-flex w-fit items-center
+          rounded-full
+          bg-amber-50
+          px-3 py-1
+          text-xs font-black
+          text-amber-700
+        ">
+          Требует заполнения
+        </span>
+
+      <% end %>
+
+    </div>
+
+
+    <%= form_with model: @legal_profile,
+                  scope: :business_legal_profile,
+                  url: legal_admin_business_settings_path,
+                  method: :patch,
+                  class: "mt-7 space-y-8" do |form| %>
+
+
+      <!-- LEGAL ERRORS -->
+
+      <% if @legal_profile.errors.any? %>
+
+        <div class="
+          rounded-xl
+          border border-red-200
+          bg-red-50
+          p-4
+        ">
+
+          <p class="text-sm font-black text-red-700">
+            Проверьте юридические данные
+          </p>
+
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+
+            <% @legal_profile.errors.full_messages.each do |message| %>
+
+              <li class="text-sm text-red-600">
+                <%= message %>
+              </li>
+
+            <% end %>
+
+          </ul>
+
+        </div>
+
+      <% end %>
+
+
+      <!-- ORGANIZATION -->
+
+      <div>
+
+        <h3 class="text-sm font-black">
+          Организация
+        </h3>
+
+        <p class="mt-1 text-xs text-[#8a8a8a]">
+          Основные регистрационные данные бизнеса.
+        </p>
+
+
+        <div class="mt-5 grid gap-5 sm:grid-cols-2">
+
+          <!-- LEGAL TYPE -->
+
+          <div>
+
+            <%= form.label :legal_type,
+                           "Организационная форма",
+                           class: "block text-sm font-black" %>
+
+            <%= form.select :legal_type,
+                            [
+                              ["Индивидуальный предприниматель", "ip"],
+                              ["ТОО", "too"],
+                              ["АО", "ao"],
+                              ["Другое", "other"]
+                            ],
+                            {
+                              prompt: "Выберите форму"
+                            },
+                            {
+                              required: true,
+                              class: "
+                                mt-2 h-11 w-full
+                                rounded-xl
+                                border border-black/10
+                                bg-white
+                                px-3 text-sm
+                                outline-none
+                                transition
+                                focus:border-[#008060]
+                              "
+                            } %>
+
+          </div>
+
+
+          <!-- BIN -->
+
+          <div>
+
+            <%= form.label :bin_iin,
+                           "БИН / ИИН",
+                           class: "block text-sm font-black" %>
+
+            <%= form.text_field :bin_iin,
+                                required: true,
+                                maxlength: 12,
+                                inputmode: "numeric",
+                                autocomplete: "off",
+                                placeholder: "123456789012",
+                                class: "
+                                  mt-2 h-11 w-full
+                                  rounded-xl
+                                  border border-black/10
+                                  bg-white
+                                  px-4 text-sm
+                                  outline-none
+                                  transition
+                                  focus:border-[#008060]
+                                " %>
+
+            <p class="mt-2 text-xs text-[#8a8a8a]">
+              12 цифр без пробелов и дефисов.
+            </p>
+
+          </div>
+
+
+          <!-- LEGAL NAME -->
+
+          <div class="sm:col-span-2">
+
+            <%= form.label :legal_name,
+                           "Юридическое наименование",
+                           class: "block text-sm font-black" %>
+
+            <%= form.text_field :legal_name,
+                                required: true,
+                                placeholder: "ИП Иванов Иван Иванович",
+                                class: "
+                                  mt-2 h-11 w-full
+                                  rounded-xl
+                                  border border-black/10
+                                  bg-white
+                                  px-4 text-sm
+                                  outline-none
+                                  transition
+                                  focus:border-[#008060]
+                                " %>
+
+            <p class="mt-2 text-xs text-[#8a8a8a]">
+              Укажите полное официальное наименование.
+            </p>
+
+          </div>
+
+
+          <!-- IBAN -->
+
+          <div class="sm:col-span-2">
+
+            <%= form.label :iban,
+                           "IBAN",
+                           class: "block text-sm font-black" %>
+
+            <%= form.text_field :iban,
+                                autocomplete: "off",
+                                placeholder: "KZ000000000000000000",
+                                class: "
+                                  mt-2 h-11 w-full
+                                  rounded-xl
+                                  border border-black/10
+                                  bg-white
+                                  px-4
+                                  font-mono text-sm uppercase
+                                  outline-none
+                                  transition
+                                  focus:border-[#008060]
+                                " %>
+
+            <p class="mt-2 text-xs text-[#8a8a8a]">
+              Банковский счёт юридического лица или ИП.
+            </p>
+
+          </div>
+
+
+          <!-- DESCRIPTION -->
+
+          <div class="sm:col-span-2">
+
+            <%= form.label :description,
+                           "Описание деятельности",
+                           class: "block text-sm font-black" %>
+
+            <%= form.text_area :description,
+                               rows: 3,
+                               placeholder: "Например: розничная торговля кофе, выпечкой и сопутствующими товарами",
+                               class: "
+                                 mt-2 w-full resize-none
+                                 rounded-xl
+                                 border border-black/10
+                                 bg-white
+                                 px-4 py-3
+                                 text-sm leading-6
+                                 outline-none
+                                 transition
+                                 focus:border-[#008060]
+                               " %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- LEGAL ADDRESS -->
+
+      <div class="border-t border-black/10 pt-7">
+
+        <h3 class="text-sm font-black">
+          Юридический адрес
+        </h3>
+
+        <p class="mt-1 text-xs text-[#8a8a8a]">
+          Адрес регистрации бизнеса.
+        </p>
+
+
+        <div class="mt-5 grid gap-5 sm:grid-cols-2">
+
+          <!-- COUNTRY -->
+
+          <div>
+
+            <%= form.label :country,
+                           "Страна",
+                           class: "block text-sm font-black" %>
+
+            <%= form.select :country,
+                            [
+                              ["Казахстан", "KZ"]
+                            ],
+                            {},
+                            {
+                              class: "
+                                mt-2 h-11 w-full
+                                rounded-xl
+                                border border-black/10
+                                bg-white
+                                px-3 text-sm
+                                outline-none
+                                focus:border-[#008060]
+                              "
+                            } %>
+
+          </div>
+
+
+          <!-- POSTAL -->
+
+          <div>
+
+            <%= form.label :postal_code,
+                           "Почтовый индекс",
+                           class: "block text-sm font-black" %>
+
+            <%= form.text_field :postal_code,
+                                inputmode: "numeric",
+                                placeholder: "050000",
+                                class: "
+                                  mt-2 h-11 w-full
+                                  rounded-xl
+                                  border border-black/10
+                                  bg-white
+                                  px-4 text-sm
+                                  outline-none
+                                  focus:border-[#008060]
+                                " %>
+
+          </div>
+
+
+          <!-- CITY -->
+
+          <div>
+
+            <%= form.label :city,
+                           "Город",
+                           class: "block text-sm font-black" %>
+
+            <%= form.text_field :city,
+                                placeholder: "Алматы",
+                                class: "
+                                  mt-2 h-11 w-full
+                                  rounded-xl
+                                  border border-black/10
+                                  bg-white
+                                  px-4 text-sm
+                                  outline-none
+                                  focus:border-[#008060]
+                                " %>
+
+          </div>
+
+
+          <!-- STREET -->
+
+          <div>
+
+            <%= form.label :street,
+                           "Улица",
+                           class: "block text-sm font-black" %>
+
+            <%= form.text_field :street,
+                                placeholder: "ул. Абая",
+                                class: "
+                                  mt-2 h-11 w-full
+                                  rounded-xl
+                                  border border-black/10
+                                  bg-white
+                                  px-4 text-sm
+                                  outline-none
+                                  focus:border-[#008060]
+                                " %>
+
+          </div>
+
+
+          <!-- BUILDING -->
+
+          <div>
+
+            <%= form.label :building,
+                           "Дом",
+                           class: "block text-sm font-black" %>
+
+            <%= form.text_field :building,
+                                placeholder: "150",
+                                class: "
+                                  mt-2 h-11 w-full
+                                  rounded-xl
+                                  border border-black/10
+                                  bg-white
+                                  px-4 text-sm
+                                  outline-none
+                                  focus:border-[#008060]
+                                " %>
+
+          </div>
+
+
+          <!-- OFFICE -->
+
+          <div>
+
+            <%= form.label :office,
+                           "Офис",
+                           class: "block text-sm font-black" %>
+
+            <%= form.text_field :office,
+                                placeholder: "25",
+                                class: "
+                                  mt-2 h-11 w-full
+                                  rounded-xl
+                                  border border-black/10
+                                  bg-white
+                                  px-4 text-sm
+                                  outline-none
+                                  focus:border-[#008060]
+                                " %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- CEO -->
+
+      <div class="border-t border-black/10 pt-7">
+
+        <h3 class="text-sm font-black">
+          Руководитель
+        </h3>
+
+        <p class="mt-1 text-xs text-[#8a8a8a]">
+          Для ИП укажите данные владельца.
+        </p>
+
+
+        <div class="mt-5 grid gap-5 sm:grid-cols-2">
+
+          <!-- LAST NAME -->
+
+          <div>
+
+            <%= form.label :ceo_last_name,
+                           "Фамилия",
+                           class: "block text-sm font-black" %>
+
+            <%= form.text_field :ceo_last_name,
+                                autocomplete: "family-name",
+                                placeholder: "Иванов",
+                                class: "
+                                  mt-2 h-11 w-full
+                                  rounded-xl
+                                  border border-black/10
+                                  bg-white
+                                  px-4 text-sm
+                                  outline-none
+                                  focus:border-[#008060]
+                                " %>
+
+          </div>
+
+
+          <!-- FIRST NAME -->
+
+          <div>
+
+            <%= form.label :ceo_first_name,
+                           "Имя",
+                           class: "block text-sm font-black" %>
+
+            <%= form.text_field :ceo_first_name,
+                                autocomplete: "given-name",
+                                placeholder: "Иван",
+                                class: "
+                                  mt-2 h-11 w-full
+                                  rounded-xl
+                                  border border-black/10
+                                  bg-white
+                                  px-4 text-sm
+                                  outline-none
+                                  focus:border-[#008060]
+                                " %>
+
+          </div>
+
+
+          <!-- MIDDLE NAME -->
+
+          <div>
+
+            <%= form.label :ceo_middle_name,
+                           "Отчество",
+                           class: "block text-sm font-black" %>
+
+            <%= form.text_field :ceo_middle_name,
+                                placeholder: "Иванович",
+                                class: "
+                                  mt-2 h-11 w-full
+                                  rounded-xl
+                                  border border-black/10
+                                  bg-white
+                                  px-4 text-sm
+                                  outline-none
+                                  focus:border-[#008060]
+                                " %>
+
+          </div>
+
+
+          <!-- PHONE -->
+
+          <div>
+
+            <%= form.label :ceo_phone,
+                           "Телефон",
+                           class: "block text-sm font-black" %>
+
+            <%= form.telephone_field :ceo_phone,
+                                     autocomplete: "tel",
+                                     placeholder: "+7 (707) 000-00-00",
+                                     data: {
+                                       controller: "phone-mask",
+                                       action: "input->phone-mask#format"
+                                     },
+                                     class: "
+                                       mt-2 h-11 w-full
+                                       rounded-xl
+                                       border border-black/10
+                                       bg-white
+                                       px-4 text-sm
+                                       outline-none
+                                       focus:border-[#008060]
+                                     " %>
+
+          </div>
+
+
+          <!-- EMAIL -->
+
+          <div class="sm:col-span-2">
+
+            <%= form.label :ceo_email,
+                           "Email",
+                           class: "block text-sm font-black" %>
+
+            <%= form.email_field :ceo_email,
+                                 autocomplete: "email",
+                                 placeholder: "director@example.kz",
+                                 class: "
+                                   mt-2 h-11 w-full
+                                   rounded-xl
+                                   border border-black/10
+                                   bg-white
+                                   px-4 text-sm
+                                   outline-none
+                                   focus:border-[#008060]
+                                 " %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- SAVE LEGAL -->
+
+      <div class="
+        flex flex-col gap-3
+        border-t border-black/10
+        pt-6
+        sm:flex-row
+        sm:items-center
+        sm:justify-between
+      ">
+
+        <p class="text-xs text-[#8a8a8a]">
+          Эти данные будут использоваться при подключении платёжных сервисов.
+        </p>
+
+
+        <%= form.submit "Сохранить юридические данные",
+                        class: "
+                          h-10 cursor-pointer
+                          rounded-xl
+                          bg-[#303030]
+                          px-5
+                          text-sm font-black
+                          text-white
+                          transition
+                          hover:bg-black
+                        " %>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- TEAM                                                      -->
+  <!-- ========================================================= -->
+
+  <section class="
+    mt-5
+    rounded-2xl
+    border border-black/10
+    bg-white
+    p-6
+  ">
+
+    <div class="
+      flex flex-col gap-4
+      sm:flex-row
+      sm:items-center
+      sm:justify-between
+    ">
+
+      <div>
+
+        <h2 class="font-black">
+          Команда
+        </h2>
+
+        <p class="mt-1 text-sm text-[#8a8a8a]">
+          Управляйте сотрудниками и их ролями.
+        </p>
+
+      </div>
+
+
+      <%= link_to "Управление сотрудниками",
+                  admin_members_path,
+                  class: "
+                    inline-flex h-10
+                    items-center justify-center
+                    rounded-xl
+                    border border-black/10
+                    bg-white
+                    px-4
+                    text-sm font-black
+                    transition
+                    hover:bg-[#f7f7f7]
+                  " %>
+
+    </div>
+
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- DANGER                                                    -->
+  <!-- ========================================================= -->
+
+  <section class="
+    mt-5
+    rounded-2xl
+    border border-red-200
+    bg-white
+    p-6
+  ">
+
+    <h2 class="font-black text-red-600">
+      Опасная зона
+    </h2>
+
+    <p class="mt-1 text-sm text-[#8a8a8a]">
+      Действия, которые могут повлиять на весь бизнес.
+    </p>
+
+
+    <div class="
+      mt-6
+      flex flex-col gap-4
+      rounded-xl
+      border border-red-100
+      bg-red-50/40
+      p-4
+      sm:flex-row
+      sm:items-center
+      sm:justify-between
+    ">
+
+      <div>
+
+        <p class="text-sm font-black">
+          Удалить бизнес
+        </p>
+
+        <p class="mt-1 text-xs text-[#8a8a8a]">
+          Будут удалены магазины, товары, заказы и связанные данные.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        disabled
+        class="
+          h-10 cursor-not-allowed
+          rounded-xl
+          border border-red-200
+          bg-white
+          px-4
+          text-sm font-black
+          text-red-600
+          opacity-50
+        "
+      >
+        Удалить бизнес
+      </button>
+
+    </div>
+
+  </section>
+
+</div>

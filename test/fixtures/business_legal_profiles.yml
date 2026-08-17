@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  account: one
+  company_type: MyString
+  legal_name: MyString
+  bin_iin: MyString
+  country: MyString
+  postal_code: MyString
+  city: MyString
+  street: MyString
+  building: MyString
+  ceo_first_name: MyString
+  ceo_last_name: MyString
+  ceo_middle_name: MyString
+  ceo_phone: MyString
+  ceo_email: MyString
+
+two:
+  account: two
+  company_type: MyString
+  legal_name: MyString
+  bin_iin: MyString
+  country: MyString
+  postal_code: MyString
+  city: MyString
+  street: MyString
+  building: MyString
+  ceo_first_name: MyString
+  ceo_last_name: MyString
+  ceo_middle_name: MyString
+  ceo_phone: MyString
+  ceo_email: MyString

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+
+<head>
+
+  <title>
+    <%= content_for(:title) || "Lavkin" %>
+  </title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= favicon_link_tag "lavkin-mark.png" %>
+
+  <%= stylesheet_link_tag "tailwind",
+                          "data-turbo-track": "reload" %>
+
+  <%= stylesheet_link_tag "actiontext",
+                        "data-turbo-track": "reload" %>
+
+  <%= javascript_importmap_tags %>
+
+</head>
+
+
+<body data-controller="confirm" class="bg-[#f1f1f1] text-[#303030]">
+
+  <div class="min-h-screen">
+
+    <%= render "admin/shared/sidebar" %>
+
+    <div class="lg:pl-[240px]">
+
+      <%= render "admin/shared/topbar" %>
+
+      <main class="min-h-screen">
+
+        <div class="mx-auto max-w-[1400px] px-5 py-8 sm:px-6 lg:px-8">
+
+          <% if notice.present? %>
+
+            <div class="mb-6 rounded-xl border border-[#b7e4cf] bg-[#eaf8f1] px-4 py-3 text-sm font-semibold text-[#005c40]">
+              <%= notice %>
+            </div>
+
+          <% end %>
+
+
+          <% if alert.present? %>
+
+            <div class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+              <%= alert %>
+            </div>
+
+          <% end %>
+
+
+          <%= yield %>
+
+        </div>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <%= render "shared/confirm_dialog" %>
+
+</body>
+
+</html>

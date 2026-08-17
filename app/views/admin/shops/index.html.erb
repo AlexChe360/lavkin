@@ -1,0 +1,104 @@
+<% content_for :title, "Магазины — Lavkin" %>
+
+<div>
+
+  <div class="flex items-start justify-between gap-6">
+
+    <div>
+      <h1 class="text-2xl font-black tracking-[-0.04em]">
+        Магазины
+      </h1>
+
+      <p class="mt-1 text-sm text-[#616161]">
+        Управляйте магазинами
+        <strong class="text-[#303030]">
+          <%= Current.account.name %>
+        </strong>
+      </p>
+    </div>
+
+
+    <%= link_to "Создать магазин",
+                new_admin_shop_path,
+                class: "inline-flex h-10 items-center justify-center rounded-xl bg-[#303030] px-4 text-sm font-black text-white transition hover:bg-black" %>
+
+  </div>
+
+
+  <div class="mt-7">
+
+    <% if @shops.any? %>
+
+      <div class="overflow-hidden rounded-2xl border border-black/10 bg-white">
+
+        <% @shops.each do |shop| %>
+
+          <div class="flex items-center justify-between gap-6 border-b border-black/5 px-5 py-4 last:border-0">
+
+            <div class="min-w-0">
+
+              <%= link_to admin_shop_path(shop),
+                          class: "font-black hover:underline" do %>
+                <%= shop.name %>
+              <% end %>
+
+              <p class="mt-1 truncate text-sm text-[#8a8a8a]">
+                /store/<%= shop.slug %>
+              </p>
+
+            </div>
+
+
+            <div class="flex items-center gap-3">
+
+              <% if Current.shop&.id == shop.id %>
+
+                <span class="rounded-full bg-[#e3f1df] px-3 py-1.5 text-xs font-black text-[#0a5c36]">
+                  Текущий
+                </span>
+
+              <% else %>
+
+                <%= button_to "Выбрать",
+                              select_admin_shop_path(shop),
+                              method: :post,
+                              class: "rounded-xl border border-black/10 px-3 py-2 text-xs font-black transition hover:bg-[#f7f7f7]" %>
+
+              <% end %>
+
+
+              <span class="rounded-full bg-[#f1f1f1] px-3 py-1.5 text-xs font-black text-[#616161]">
+                <%= shop.status %>
+              </span>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+    <% else %>
+
+      <div class="rounded-2xl border border-black/10 bg-white px-6 py-14 text-center">
+
+        <h2 class="text-lg font-black">
+          Магазинов пока нет
+        </h2>
+
+        <p class="mt-2 text-sm text-[#8a8a8a]">
+          Создайте первый магазин для вашего бизнеса.
+        </p>
+
+        <%= link_to "Создать магазин",
+                    new_admin_shop_path,
+                    class: "mt-6 inline-flex h-10 items-center justify-center rounded-xl bg-[#303030] px-4 text-sm font-black text-white" %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>

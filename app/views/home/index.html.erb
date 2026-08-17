@@ -1,0 +1,1058 @@
+<div class="min-h-screen w-full bg-white text-[#111111]">
+  <!-- ====================================================== --> <!-- HEADER
+  --> <!-- ====================================================== -->
+  <header
+    class="sticky top-0 z-50 border-b border-black/5 bg-white/95 backdrop-blur"
+  >
+
+    <div
+      class="
+        mx-auto flex h-16 max-w-[1440px] items-center justify-between px-5 sm:px-6
+        lg:px-8
+      "
+    >
+      <!-- BRAND -->
+      <%= link_to root_path,
+                  class: "flex items-center gap-3" do %>
+
+        <%= image_tag "lavkin-mark.png",
+                alt: "Lavkin",
+                class: "size-9 shrink-0 object-contain" %>
+
+        <span class="text-xl font-black tracking-[-0.04em]">
+          Lavkin
+        </span>
+
+      <% end %>
+      <!-- NAV -->
+      <nav class="hidden items-center gap-8 lg:flex">
+
+        <a
+          href="#platform"
+          class="
+            text-sm font-semibold text-[#616161] transition hover:text-black
+          "
+        >
+          Возможности
+        </a>
+
+        <a
+          href="#storefront"
+          class="
+            text-sm font-semibold text-[#616161] transition hover:text-black
+          "
+        >
+          Витрина
+        </a>
+
+        <a
+          href="#inventory"
+          class="
+            text-sm font-semibold text-[#616161] transition hover:text-black
+          "
+        >
+          Склад
+        </a>
+
+        <a
+          href="#start"
+          class="
+            text-sm font-semibold text-[#616161] transition hover:text-black
+          "
+        >
+          Как начать
+        </a>
+
+      </nav>
+      <!-- ACTIONS -->
+      <div class="flex items-center gap-2">
+
+        <%= link_to "Войти",
+        new_session_path,
+        class:
+          "inline-flex h-10 items-center justify-center rounded-xl px-4 text-sm font-bold text-[#303030] transition hover:bg-[#f1f1f1]" %>
+
+        <%= link_to "Начать бесплатно",
+        new_registration_path,
+        class:
+          "hidden h-10 items-center justify-center rounded-xl bg-[#303030] px-5 text-sm font-bold text-white transition hover:bg-black sm:inline-flex" %>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <main>
+    <!-- ====================================================== --> <!-- HERO
+    --> <!-- ====================================================== -->
+    <section class="overflow-hidden">
+
+      <div
+        class="
+          mx-auto max-w-[1440px] px-5 pb-20 pt-20 sm:px-6 sm:pt-28 lg:px-8 lg:pb-28
+        "
+      >
+
+        <div class="mx-auto max-w-5xl text-center">
+
+          <div
+            class="
+              inline-flex items-center gap-2 rounded-full border border-black/10 bg-[#f7f7f7]
+              px-4 py-2 text-xs font-bold text-[#616161]
+            "
+          >
+
+            <span class="size-2 rounded-full bg-[#008060]"></span>
+            Платформа для современной торговли
+          </div>
+
+          <h1
+            class="
+              mt-7 text-5xl font-black leading-[0.98] tracking-[-0.065em] sm:text-6xl
+              lg:text-[78px]
+            "
+          >
+            Создайте магазин.
+            <br>
+            Управляйте всем
+            <span class="text-[#008060]">
+              в одном месте.
+            </span>
+          </h1>
+
+          <p class="mx-auto mt-7 max-w-2xl text-lg leading-8 text-[#616161] sm:text-xl">
+            Интернет-магазин, товары, заказы, склад, платежи и аналитика —
+            единая платформа для вашего бизнеса.
+          </p>
+
+          <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+
+            <%= link_to new_registration_path,
+                        class: "inline-flex h-13 w-full items-center justify-center rounded-xl bg-[#303030] px-7 text-sm font-black text-white transition hover:bg-black sm:w-auto" do %>
+              Начать бесплатно
+              <svg
+                class="ml-2"
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M5 12h14"/>
+                <path d="m13 6 6 6-6 6"/>
+              </svg>
+
+            <% end %>
+
+            <a
+              href="#platform"
+              class="
+                inline-flex h-13 w-full items-center justify-center rounded-xl border
+                border-black/10 bg-white px-7 text-sm font-black text-[#303030] transition
+                hover:bg-[#f7f7f7] sm:w-auto
+              "
+            >
+              Посмотреть возможности
+            </a>
+
+          </div>
+
+        </div>
+        <!-- ================================================== --> <!-- ADMIN
+        MOCKUP --> <!-- ================================================== -->
+        <div class="relative mx-auto mt-16 max-w-[1220px] lg:mt-20">
+
+          <div
+            class="
+              absolute -inset-16 -z-10
+              bg-[radial-gradient(circle_at_center,rgba(0,128,96,0.12),transparent_65%)]
+            "
+          ></div>
+
+          <div
+            class="
+              overflow-hidden rounded-[26px] border border-black/10 bg-[#f1f1f1] p-2
+              shadow-[0_40px_100px_rgba(0,0,0,0.15)]
+            "
+          >
+
+            <div class="overflow-hidden rounded-[20px] border border-black/10 bg-white">
+              <!-- MOCK TOPBAR -->
+              <div
+                class="
+                  flex h-14 items-center justify-between border-b border-black/10 px-5
+                "
+              >
+
+                <div class="flex items-center gap-3">
+
+                  <span
+                    class="
+                      flex size-8 items-center justify-center rounded-lg bg-black text-xs font-black
+                      text-white
+                    "
+                  >
+                    L
+                  </span>
+
+                  <strong class="text-sm">
+                    Lavkin
+                  </strong>
+
+                </div>
+
+                <div class="flex items-center gap-3">
+
+                  <span class="hidden text-xs font-semibold text-[#616161] sm:block">
+                    Coffee Group
+                  </span>
+
+                  <div class="size-8 rounded-full bg-[#e3e3e3]"></div>
+
+                </div>
+
+              </div>
+
+              <div class="grid min-h-[590px] lg:grid-cols-[220px_minmax(0,1fr)]">
+                <!-- MOCK SIDEBAR -->
+                <aside class="hidden border-r border-black/10 bg-[#f7f7f7] p-4 lg:block">
+
+                  <div class="rounded-xl border border-black/10 bg-white p-3">
+
+                    <p class="text-[10px] font-black uppercase tracking-[0.12em] text-[#8a8a8a]">
+                      Текущий магазин
+                    </p>
+
+                    <div class="mt-2 flex items-center justify-between text-sm font-bold">
+                      Coffee Time
+                      <span>⌄</span>
+                    </div>
+
+                  </div>
+
+                  <nav class="mt-5 space-y-1">
+
+                    <% [
+                      ["Главная", true],
+                      ["Заказы", false],
+                      ["Товары", false],
+                      ["Категории", false],
+                      ["Склад", false],
+                      ["Интернет-магазин", false],
+                      ["Платежи", false]
+                    ].each do |label, active| %>
+
+                      <div
+                        class="
+                          <%= active ? "bg-[#e3e3e3] text-black" : "text-[#616161]" %> rounded-lg px-3 py-2.5 text-sm font-bold
+                        "
+                      >
+                        <%= label %>
+                      </div>
+
+                    <% end %>
+
+                  </nav>
+
+                </aside>
+                <!-- MOCK CONTENT -->
+                <div class="bg-[#f7f7f7] p-5 sm:p-7 lg:p-8">
+
+                  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+                    <div>
+
+                      <p class="text-sm font-semibold text-[#616161]">
+                        Coffee Time
+                      </p>
+
+                      <h2 class="mt-1 text-2xl font-black tracking-[-0.04em]">
+                        Главная
+                      </h2>
+
+                    </div>
+
+                    <button
+                      class="
+                        rounded-xl bg-[#303030] px-4 py-2.5 text-xs font-black text-white
+                      "
+                    >
+                      Создать заказ
+                    </button>
+
+                  </div>
+                  <!-- KPI -->
+                  <div class="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+
+                    <% [
+                      ["Продажи сегодня", "485 000 ₸", "+12.4%"],
+                      ["Заказы", "24", "+8"],
+                      ["Товары", "128", "6 мало"],
+                      ["Доступно", "1 542", "единиц"]
+                    ].each do |label, value, meta| %>
+
+                      <div class="rounded-2xl border border-black/10 bg-white p-5">
+
+                        <p class="text-xs font-black uppercase tracking-[0.1em] text-[#8a8a8a]">
+                          <%= label %>
+                        </p>
+
+                        <p class="mt-4 text-2xl font-black tracking-[-0.04em]">
+                          <%= value %>
+                        </p>
+
+                        <p class="mt-2 text-xs font-bold text-[#008060]">
+                          <%= meta %>
+                        </p>
+
+                      </div>
+
+                    <% end %>
+
+                  </div>
+                  <!-- ORDERS TABLE -->
+                  <div class="mt-5 overflow-hidden rounded-2xl border border-black/10 bg-white">
+
+                    <div
+                      class="
+                        flex items-center justify-between border-b border-black/10 px-5 py-4
+                      "
+                    >
+
+                      <div>
+                        <h3 class="font-black">
+                          Последние заказы
+                        </h3>
+
+                        <p class="mt-1 text-xs text-[#8a8a8a]">
+                          Сегодня
+                        </p>
+                      </div>
+
+                      <span class="text-xs font-black text-[#008060]">
+                        Все заказы
+                      </span>
+
+                    </div>
+
+                    <div class="divide-y divide-black/5">
+
+                      <% [
+                        ["#1048", "Алексей", "18 500 ₸", "Оплачен"],
+                        ["#1047", "Мария", "12 900 ₸", "Оплачен"],
+                        ["#1046", "Иван", "8 200 ₸", "В обработке"],
+                        ["#1045", "Анна", "27 400 ₸", "Оплачен"]
+                      ].each do |number, customer, total, status| %>
+
+                        <div
+                          class="
+                            grid grid-cols-[80px_1fr_auto] items-center gap-4 px-5 py-4 text-sm
+                            sm:grid-cols-[90px_1fr_140px_130px]
+                          "
+                        >
+
+                          <strong>
+                            <%= number %>
+                          </strong>
+
+                          <span class="text-[#616161]">
+                            <%= customer %>
+                          </span>
+
+                          <span class="hidden font-bold sm:block">
+                            <%= total %>
+                          </span>
+
+                          <span
+                            class="
+                              rounded-full bg-[#e3f1df] px-3 py-1.5 text-center text-xs font-black
+                              text-[#0a5c36]
+                            "
+                          >
+                            <%= status %>
+                          </span>
+
+                        </div>
+
+                      <% end %>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+    <!-- ====================================================== --> <!-- VALUE
+    STRIP --> <!-- ====================================================== -->
+    <section class="border-y border-black/10 bg-[#f7f7f7]">
+
+      <div
+        class="
+          mx-auto grid max-w-[1440px] divide-y divide-black/10 px-5 sm:grid-cols-2
+          sm:divide-x sm:divide-y-0 sm:px-6 lg:grid-cols-4 lg:px-8
+        "
+      >
+
+        <% [
+          ["01", "Запустите быстро", "Создание магазина без отдельной разработки."],
+          ["02", "Управляйте продажами", "Все заказы и товары в одном интерфейсе."],
+          ["03", "Контролируйте склад", "Остатки по точкам и полная история движений."],
+          ["04", "Развивайте бизнес", "Витрина, аналитика и инструменты роста."]
+        ].each do |number, title, text| %>
+
+          <div class="px-6 py-9 first:pl-0 last:pr-0">
+
+            <span class="text-xs font-black text-[#008060]">
+              <%= number %>
+            </span>
+
+            <h3 class="mt-3 font-black">
+              <%= title %>
+            </h3>
+
+            <p class="mt-2 text-sm leading-6 text-[#616161]">
+              <%= text %>
+            </p>
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+    </section>
+    <!-- ====================================================== --> <!--
+    PLATFORM --> <!-- ======================================================
+    -->
+    <section id="platform" class="px-5 py-24 sm:px-6 lg:px-8 lg:py-32">
+
+      <div class="mx-auto max-w-[1440px]">
+
+        <div class="max-w-3xl">
+
+          <p class="text-sm font-black uppercase tracking-[0.16em] text-[#008060]">
+            Commerce platform
+          </p>
+
+          <h2
+            class="
+              mt-4 text-4xl font-black tracking-[-0.055em] sm:text-5xl lg:text-6xl
+            "
+          >
+            Одна система вместо десятка сервисов
+          </h2>
+
+          <p class="mt-5 max-w-2xl text-lg leading-8 text-[#616161]">
+            От первого товара до выполненного заказа — Lavkin объединяет
+            ключевые процессы бизнеса.
+          </p>
+
+        </div>
+
+        <div class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+
+          <% [
+            ["01", "Интернет-магазин", "Создавайте витрину, настраивайте цвета, логотип, баннеры и каталог."],
+            ["02", "Товары и категории", "Управляйте ассортиментом, ценами, изображениями и публикацией товаров."],
+            ["03", "Заказы", "Контролируйте путь заказа от оформления до оплаты и выполнения."],
+            ["04", "Склад", "Остатки по локациям, резервирование, движения и инвентаризации."],
+            ["05", "Платежи", "Следите за оплатами и статусами операций в едином интерфейсе."],
+            ["06", "Аналитика", "Получайте понятную картину продаж, товаров и состояния бизнеса."]
+          ].each do |number, title, text| %>
+
+            <article
+              class="
+                group rounded-3xl border border-black/10 bg-white p-7 transition
+                hover:-translate-y-1 hover:shadow-xl hover:shadow-black/5
+              "
+            >
+
+              <span class="text-xs font-black text-[#008060]">
+                <%= number %>
+              </span>
+
+              <h3 class="mt-7 text-2xl font-black tracking-[-0.04em]">
+                <%= title %>
+              </h3>
+
+              <p class="mt-4 leading-7 text-[#616161]">
+                <%= text %>
+              </p>
+
+            </article>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </section>
+    <!-- ====================================================== --> <!--
+    STOREFRONT --> <!-- ======================================================
+    -->
+    <section
+      id="storefront"
+      class="bg-[#f7f7f7] px-5 py-24 sm:px-6 lg:px-8 lg:py-32"
+    >
+
+      <div
+        class="
+          mx-auto grid max-w-[1440px] gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-center
+        "
+      >
+
+        <div>
+
+          <p class="text-sm font-black uppercase tracking-[0.16em] text-[#008060]">
+            Online Store
+          </p>
+
+          <h2 class="mt-4 text-4xl font-black tracking-[-0.055em] sm:text-5xl">
+            Ваш магазин.
+            <br>
+            Ваш стиль.
+          </h2>
+
+          <p class="mt-6 max-w-xl text-lg leading-8 text-[#616161]">
+            Настройте внешний вид витрины под бренд: логотип, цвета, баннер,
+            категории и товары.
+          </p>
+
+          <div class="mt-8 space-y-4">
+
+            <% [
+              "Своя цветовая схема",
+              "Логотип и промо-баннеры",
+              "Категории и рекомендуемые товары",
+              "Адаптация под телефон и компьютер"
+            ].each do |item| %>
+
+              <div class="flex items-center gap-3">
+
+                <span
+                  class="
+                    flex size-6 items-center justify-center rounded-full bg-[#dff3ec] text-[#008060]
+                  "
+                >
+                  ✓
+                </span>
+
+                <span class="font-semibold">
+                  <%= item %>
+                </span>
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+        <div
+          class="
+            rounded-[30px] border border-black/10 bg-white p-4 shadow-xl shadow-black/5
+          "
+        >
+
+          <div class="overflow-hidden rounded-[22px] border border-black/10 bg-[#f5f5f5]">
+
+            <div class="flex h-16 items-center justify-between bg-white px-5">
+
+              <div class="text-lg font-black">
+                Coffee Time
+              </div>
+
+              <div class="rounded-xl bg-[#008060] px-4 py-2 text-xs font-black text-white">
+                Корзина
+              </div>
+
+            </div>
+
+            <div class="relative bg-[#273b33] px-7 py-14 text-white sm:px-10 sm:py-16">
+
+              <p class="text-xs font-black uppercase tracking-[0.15em] text-white/60">
+                Coffee Time
+              </p>
+
+              <h3 class="mt-3 text-4xl font-black tracking-[-0.05em]">
+                Новая коллекция
+              </h3>
+
+              <p class="mt-4 max-w-md text-white/70">
+                Авторский кофе и свежая выпечка каждый день.
+              </p>
+
+              <button class="mt-6 rounded-xl bg-[#008060] px-5 py-3 text-sm font-black">
+                Смотреть товары
+              </button>
+
+            </div>
+
+            <div class="p-5 sm:p-7">
+
+              <div class="mb-5 flex gap-2">
+
+                <span class="rounded-full bg-[#008060] px-4 py-2 text-xs font-black text-white">
+                  Все
+                </span>
+
+                <span class="rounded-full bg-white px-4 py-2 text-xs font-black">
+                  Кофе
+                </span>
+
+                <span class="rounded-full bg-white px-4 py-2 text-xs font-black">
+                  Десерты
+                </span>
+
+              </div>
+
+              <div class="grid gap-4 sm:grid-cols-2">
+
+                <% [
+                  ["Cappuccino", "2 500 ₸"],
+                  ["Flat White", "2 700 ₸"]
+                ].each do |name, price| %>
+
+                  <div class="rounded-2xl bg-white p-4">
+
+                    <div class="aspect-[4/3] rounded-xl bg-[#ececec]"></div>
+
+                    <h4 class="mt-4 font-black">
+                      <%= name %>
+                    </h4>
+
+                    <div class="mt-3 flex items-center justify-between">
+
+                      <strong>
+                        <%= price %>
+                      </strong>
+
+                      <span
+                        class="
+                          flex size-9 items-center justify-center rounded-xl bg-[#008060] text-xl
+                          font-black text-white
+                        "
+                      >
+                        +
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+    <!-- ====================================================== --> <!--
+    INVENTORY --> <!-- ======================================================
+    -->
+    <section
+      id="inventory"
+      class="bg-[#111111] px-5 py-24 text-white sm:px-6 lg:px-8 lg:py-32"
+    >
+
+      <div class="mx-auto grid max-w-[1440px] gap-14 lg:grid-cols-2 lg:items-center">
+
+        <div class="order-2 lg:order-1">
+
+          <div class="overflow-hidden rounded-3xl border border-white/10 bg-[#1a1a1a]">
+
+            <div class="border-b border-white/10 px-6 py-5">
+
+              <p class="text-sm font-black">
+                Остатки
+              </p>
+
+              <p class="mt-1 text-xs text-white/40">
+                Coffee Group
+              </p>
+
+            </div>
+
+            <% [
+              ["Cappuccino", "Основной склад", "48"],
+              ["Flat White", "Основной склад", "21"],
+              ["Espresso", "Coffee Time Dostyk", "8"],
+              ["Cheesecake", "Coffee Time Dostyk", "3"]
+            ].each do |product, location, quantity| %>
+
+              <div
+                class="
+                  grid grid-cols-[1fr_auto] items-center gap-4 border-b border-white/5 px-6 py-5
+                  last:border-0 sm:grid-cols-[1fr_180px_70px]
+                "
+              >
+
+                <strong class="text-sm">
+                  <%= product %>
+                </strong>
+
+                <span class="hidden text-sm text-white/40 sm:block">
+                  <%= location %>
+                </span>
+
+                <span class="rounded-lg bg-white/10 px-3 py-2 text-center text-sm font-black">
+                  <%= quantity %>
+                </span>
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+        <div class="order-1 lg:order-2">
+
+          <p class="text-sm font-black uppercase tracking-[0.16em] text-[#4fd1aa]">
+            Inventory
+          </p>
+
+          <h2 class="mt-4 text-4xl font-black tracking-[-0.055em] sm:text-5xl">
+            Знайте, сколько товара у вас есть на самом деле
+          </h2>
+
+          <p class="mt-6 max-w-xl text-lg leading-8 text-white/55">
+            Несколько складов и торговых точек, резервирование, история
+            движений и полноценная инвентаризация.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+    <!-- ====================================================== --> <!-- START
+    --> <!-- ====================================================== -->
+    <section id="start" class="px-5 py-24 sm:px-6 lg:px-8 lg:py-32">
+
+      <div class="mx-auto max-w-[1440px]">
+
+        <div class="text-center">
+
+          <p class="text-sm font-black uppercase tracking-[0.16em] text-[#008060]">
+            Начало работы
+          </p>
+
+          <h2
+            class="
+              mx-auto mt-4 max-w-3xl text-4xl font-black tracking-[-0.055em] sm:text-5xl
+            "
+          >
+            От регистрации до первого магазина — несколько шагов
+          </h2>
+
+        </div>
+
+        <div class="mt-14 grid gap-5 md:grid-cols-3">
+
+          <% [
+            ["1", "Создайте аккаунт", "Укажите email и создайте пространство вашего бизнеса."],
+            ["2", "Добавьте магазин", "Настройте ассортимент, склад и внешний вид витрины."],
+            ["3", "Начните продавать", "Опубликуйте магазин и принимайте первые заказы."]
+          ].each do |number, title, text| %>
+
+            <div class="rounded-3xl bg-[#f7f7f7] p-8">
+
+              <span
+                class="
+                  flex size-10 items-center justify-center rounded-full bg-[#303030] text-sm
+                  font-black text-white
+                "
+              >
+                <%= number %>
+              </span>
+
+              <h3 class="mt-8 text-xl font-black">
+                <%= title %>
+              </h3>
+
+              <p class="mt-3 leading-7 text-[#616161]">
+                <%= text %>
+              </p>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </section>
+    <!-- ====================================================== --> <!-- FINAL
+    CTA --> <!-- ====================================================== -->
+    <section class="bg-white px-5 pb-24 pt-10 sm:px-6 lg:px-8 lg:pb-32">
+
+      <div
+        class="
+          mx-auto max-w-[1440px] overflow-hidden rounded-[36px] bg-[#303030] px-7 py-16
+          text-center text-white sm:px-12 lg:py-24
+        "
+      >
+
+        <p class="text-sm font-black uppercase tracking-[0.16em] text-[#4fd1aa]">
+          Начните с Lavkin
+        </p>
+
+        <h2
+          class="
+            mx-auto mt-4 max-w-4xl text-4xl font-black tracking-[-0.055em] sm:text-5xl
+            lg:text-6xl
+          "
+        >
+          Создайте магазин и управляйте бизнесом в одной системе.
+        </h2>
+
+        <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-white/60">
+          Настройте магазин, добавьте товары и подготовьте бизнес к первым
+          продажам.
+        </p>
+
+        <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+
+          <%= link_to new_registration_path,
+                  class: "inline-flex h-12 w-full items-center justify-center rounded-xl bg-white px-6 text-sm font-black text-[#111111] transition hover:bg-[#ededed] sm:w-auto" do %>
+            Начать бесплатно
+            <svg
+              class="ml-2"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5 12h14"/>
+              <path d="m13 6 6 6-6 6"/>
+            </svg>
+
+          <% end %>
+
+          <%= link_to "Войти",
+          new_session_path,
+          class:
+            "inline-flex h-12 w-full items-center justify-center rounded-xl border border-white/15 px-6 text-sm font-black text-white transition hover:bg-white/10 sm:w-auto" %>
+
+        </div>
+
+      </div>
+
+    </section>
+  </main>
+  <!-- ====================================================== --> <!-- FOOTER
+  --> <!-- ====================================================== -->
+  <footer class="w-full bg-[#111111] text-white">
+
+    <div class="mx-auto max-w-[1600px] px-5 py-14 sm:px-6 lg:px-8">
+
+      <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.25fr_1fr_1.15fr_1fr]">
+        <!-- ==================================================== --> <!--
+        BRAND --> <!-- ====================================================
+        -->
+        <div>
+
+          <%= link_to root_path,
+                    class: "inline-flex items-center gap-3" do %>
+
+            <%= image_tag "lavkin-mark-dark.png",
+                alt: "Lavkin",
+                class: "size-10 shrink-0 object-contain" %>
+
+            <span class="text-xl font-black tracking-[-0.04em]">
+              Lavkin
+            </span>
+
+          <% end %>
+
+          <p class="mt-5 max-w-[320px] text-sm leading-6 text-white/55">
+            Платформа для создания интернет-магазинов и управления товарами,
+            заказами, складом и продажами.
+          </p>
+
+          <p class="mt-7 text-sm text-white/35">
+            ©
+            <%= Time.current.year %>
+            Lavkin
+          </p>
+
+        </div>
+        <!-- ==================================================== --> <!--
+        PRODUCT --> <!-- ====================================================
+        -->
+        <div>
+
+          <h3 class="text-sm font-black text-white">
+            Продукт
+          </h3>
+
+          <nav class="mt-5 space-y-3">
+
+            <a
+              href="#platform"
+              class="block text-sm text-white/55 transition hover:text-white"
+            >
+              Возможности
+            </a>
+
+            <a
+              href="#storefront"
+              class="block text-sm text-white/55 transition hover:text-white"
+            >
+              Интернет-магазин
+            </a>
+
+            <a
+              href="#inventory"
+              class="block text-sm text-white/55 transition hover:text-white"
+            >
+              Склад
+            </a>
+
+            <a
+              href="#start"
+              class="block text-sm text-white/55 transition hover:text-white"
+            >
+              Как начать
+            </a>
+
+          </nav>
+
+        </div>
+        <!-- ==================================================== --> <!--
+        DOCUMENTS --> <!-- ====================================================
+        -->
+        <div>
+
+          <h3 class="text-sm font-black text-white">
+            Документы
+          </h3>
+
+          <nav class="mt-5 space-y-3">
+
+            <%= link_to "Публичная оферта",
+            "#",
+            class: "block text-sm text-white/55 transition hover:text-white" %>
+
+            <%= link_to "Политика конфиденциальности",
+            "#",
+            class: "block text-sm text-white/55 transition hover:text-white" %>
+
+            <%= link_to "Условия использования",
+            "#",
+            class: "block text-sm text-white/55 transition hover:text-white" %>
+
+          </nav>
+
+        </div>
+        <!-- ==================================================== --> <!--
+        CONTACTS --> <!-- ====================================================
+        -->
+        <div>
+
+          <h3 class="text-sm font-black text-white">
+            Контакты
+          </h3>
+
+          <div class="mt-5 space-y-3">
+
+            <a
+              href="mailto:info@lavkin.kz"
+              class="block text-sm text-white/55 transition hover:text-white"
+            >
+              info@lavkin.kz
+            </a>
+
+            <p class="text-sm text-white/55">
+              Алматы, Казахстан
+            </p>
+
+            <p class="text-sm text-white/35">
+              Пн–Пт, 10:00–19:00
+            </p>
+
+          </div>
+
+          <%= link_to new_session_path,
+                    class: "mt-6 inline-flex h-10 items-center justify-center rounded-xl border border-white/15 px-4 text-sm font-bold text-white transition hover:border-white/25 hover:bg-white/10" do %>
+            Войти в Lavkin
+            <svg
+              class="ml-2"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5 12h14"/>
+              <path d="m13 6 6 6-6 6"/>
+            </svg>
+
+          <% end %>
+
+        </div>
+
+      </div>
+      <!-- ====================================================== --> <!--
+      BOTTOM --> <!-- ======================================================
+      -->
+      <div
+        class="
+          mt-12 flex flex-col gap-5 border-t border-white/10 pt-6 sm:flex-row
+          sm:items-center sm:justify-between
+        "
+      >
+
+        <p class="text-xs leading-5 text-white/35">
+          Lavkin — платформа для электронной коммерции и управления продажами.
+        </p>
+
+        <div class="flex flex-wrap gap-x-5 gap-y-2">
+
+          <%= link_to "Конфиденциальность",
+          "#",
+          class: "text-xs text-white/35 transition hover:text-white" %>
+
+          <%= link_to "Условия",
+          "#",
+          class: "text-xs text-white/35 transition hover:text-white" %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+</div>

@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  shop: one
+  source_location: one
+  destination_location: one
+  number: MyString
+  status: MyString
+  completed_at: 2026-08-15 22:40:42
+
+two:
+  shop: two
+  source_location: two
+  destination_location: two
+  number: MyString
+  status: MyString
+  completed_at: 2026-08-15 22:40:42

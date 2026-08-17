@@ -1,0 +1,29 @@
+<% content_for :title, "Редактирование категории — Lavkin" %>
+
+<div class="mx-auto max-w-2xl">
+
+  <%= link_to "← Категории",
+              admin_categories_path,
+              class: "text-sm font-bold text-[#616161] hover:text-black" %>
+
+  <div class="mt-5">
+
+    <h1 class="text-2xl font-black tracking-[-0.04em]">
+      Редактирование категории
+    </h1>
+
+    <p class="mt-1 text-sm text-[#616161]">
+      <%= @category.name %>
+    </p>
+
+  </div>
+
+
+  <div class="mt-7 rounded-2xl border border-black/10 bg-white p-6">
+
+    <%= render "form",
+               category: @category %>
+
+  </div>
+
+</div>

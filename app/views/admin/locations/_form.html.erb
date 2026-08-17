@@ -1,0 +1,122 @@
+<%= form_with model: [:admin, location],
+              class: "space-y-6" do |form| %>
+
+  <% if location.errors.any? %>
+
+    <div class="rounded-xl border border-red-200 bg-red-50 p-4">
+
+      <p class="text-sm font-black text-red-700">
+        Проверьте введённые данные
+      </p>
+
+      <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-red-700">
+
+        <% location.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+
+      </ul>
+
+    </div>
+
+  <% end %>
+
+
+  <div>
+
+    <%= form.label :name,
+                   "Название склада",
+                   class: "block text-sm font-black" %>
+
+    <%= form.text_field :name,
+                        autofocus: true,
+                        placeholder: "Основной склад",
+                        class: "
+                          mt-2 h-11 w-full
+                          rounded-xl border border-black/10
+                          bg-white px-4 text-sm
+                          outline-none
+                          focus:border-[#008060]
+                        " %>
+
+  </div>
+
+
+  <div>
+
+    <%= form.label :code,
+                   "Код",
+                   class: "block text-sm font-black" %>
+
+    <%= form.text_field :code,
+                        placeholder: "main",
+                        class: "
+                          mt-2 h-11 w-full
+                          rounded-xl border border-black/10
+                          bg-white px-4
+                          font-mono text-sm
+                          outline-none
+                          focus:border-[#008060]
+                        " %>
+
+    <p class="mt-2 text-xs text-[#8a8a8a]">
+      Внутренний уникальный код склада. Например: main, almaty-2.
+    </p>
+
+  </div>
+
+
+  <label class="
+    flex cursor-pointer
+    items-center justify-between
+    rounded-xl border border-black/10
+    p-4
+  ">
+
+    <div>
+
+      <p class="text-sm font-black">
+        Активный склад
+      </p>
+
+      <p class="mt-1 text-xs text-[#8a8a8a]">
+        Склад доступен для остатков и складских операций.
+      </p>
+
+    </div>
+
+    <%= form.check_box :active,
+                       class: "
+                         size-5 rounded
+                         border-black/20
+                         text-[#008060]
+                         focus:ring-[#008060]
+                       " %>
+
+  </label>
+
+
+  <div class="flex justify-end gap-3 border-t border-black/10 pt-5">
+
+    <%= link_to "Отмена",
+                admin_locations_path,
+                class: "
+                  inline-flex h-10 items-center
+                  rounded-xl border border-black/10
+                  px-4 text-sm font-black
+                  hover:bg-[#f7f7f7]
+                " %>
+
+    <%= form.submit(
+          location.persisted? ? "Сохранить" : "Создать склад",
+          class: "
+            h-10 cursor-pointer
+            rounded-xl bg-[#303030]
+            px-5 text-sm font-black
+            text-white hover:bg-black
+          "
+        ) %>
+
+  </div>
+
+<% end %>

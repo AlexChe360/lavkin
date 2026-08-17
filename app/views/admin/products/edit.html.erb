@@ -1,0 +1,27 @@
+<% content_for :title, "Редактирование товара — Lavkin" %>
+
+<div class="mx-auto max-w-4xl">
+
+  <%= link_to "← Товар",
+              admin_product_path(@product),
+              class: "text-sm font-bold text-[#616161] hover:text-black" %>
+
+  <div class="mt-5">
+
+    <h1 class="text-2xl font-black tracking-[-0.04em]">
+      Редактирование товара
+    </h1>
+
+    <p class="mt-1 text-sm text-[#616161]">
+      <%= @product.name %>
+    </p>
+
+  </div>
+
+
+  <div class="mt-7">
+    <%= render "form",
+               product: @product %>
+  </div>
+
+</div>

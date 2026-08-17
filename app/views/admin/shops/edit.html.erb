@@ -1,0 +1,60 @@
+<% content_for :title, "Редактирование магазина — Lavkin" %>
+
+<div class="mx-auto max-w-2xl">
+
+  <%= link_to "← Назад",
+              admin_shop_path(@shop),
+              class: "text-sm font-bold text-[#616161] hover:text-black" %>
+
+  <div class="mt-5">
+
+    <h1 class="text-2xl font-black tracking-[-0.04em]">
+      Редактирование магазина
+    </h1>
+
+    <p class="mt-1 text-sm text-[#616161]">
+      Измените данные магазина
+      <strong class="text-[#303030]">
+        <%= @shop.name %>
+      </strong>
+    </p>
+
+  </div>
+
+
+  <div class="mt-7 rounded-2xl border border-black/10 bg-white p-6">
+
+    <%= render "form",
+               shop: @shop %>
+
+  </div>
+
+  <section class="mt-8 rounded-2xl border border-red-200 bg-white p-6">
+
+    <h2 class="font-black text-red-700">
+      Опасная зона
+    </h2>
+
+    <p class="mt-2 text-sm leading-6 text-[#616161]">
+      Удаление магазина нельзя отменить.
+      Все связанные с ним данные также могут быть удалены.
+    </p>
+
+
+    <div class="mt-5">
+
+      <%= button_to "Удалить магазин",
+                    admin_shop_path(@shop),
+                    method: :delete,
+                    form: {
+                      data: {
+                        turbo_confirm: "Вы действительно хотите удалить магазин «#{@shop.name}»?"
+                      }
+                    },
+                    class: "inline-flex h-10 items-center justify-center rounded-xl bg-red-600 px-4 text-sm font-black text-white transition hover:bg-red-700" %>
+
+    </div>
+
+  </section>
+
+</div>

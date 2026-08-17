@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  inventory_count: one
+  product: one
+  expected_quantity: 1
+  actual_quantity: 1
+
+two:
+  inventory_count: two
+  product: two
+  expected_quantity: 1
+  actual_quantity: 1

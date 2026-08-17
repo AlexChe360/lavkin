@@ -1,0 +1,112 @@
+<% content_for :title, "Приглашение — Lavkin" %>
+
+<div class="flex min-h-screen items-center justify-center bg-[#f5f5f5] px-5 py-10">
+
+  <div class="w-full max-w-lg">
+
+    <div class="rounded-2xl border border-black/10 bg-white p-8">
+
+      <div class="flex size-12 items-center justify-center rounded-xl bg-[#303030] text-xl font-black text-white">
+        L
+      </div>
+
+      <h1 class="mt-6 text-2xl font-black tracking-[-0.04em]">
+        Вас пригласили в команду
+      </h1>
+
+      <p class="mt-2 text-sm leading-6 text-[#616161]">
+        Вы получили приглашение присоединиться к
+        <strong class="text-[#303030]">
+          <%= @invitation.account.name %>
+        </strong>.
+      </p>
+
+
+      <div class="mt-6 rounded-xl bg-[#f7f7f7] p-5">
+
+        <div>
+          <p class="text-xs font-bold text-[#8a8a8a]">
+            Email
+          </p>
+
+          <p class="mt-1 text-sm font-black">
+            <%= @invitation.email %>
+          </p>
+        </div>
+
+
+        <div class="mt-4">
+          <p class="text-xs font-bold text-[#8a8a8a]">
+            Роль
+          </p>
+
+          <p class="mt-1 text-sm font-black">
+            <%= {
+                  "admin" => "Администратор",
+                  "manager" => "Менеджер",
+                  "staff" => "Сотрудник"
+                }.fetch(@invitation.role, @invitation.role) %>
+          </p>
+        </div>
+
+      </div>
+
+
+      <% if Current.user %>
+
+        <div class="mt-6">
+
+          <p class="mb-4 text-sm text-[#616161]">
+            Вы вошли как
+            <strong class="text-[#303030]">
+              <%= Current.user.email_address %>
+            </strong>
+          </p>
+
+          <% if Current.user.email_address.downcase ==
+                @invitation.email.downcase %>
+
+            <%= button_to "Принять приглашение",
+                          accept_member_invitation_path(@invitation.token),
+                          method: :post,
+                          class: "h-11 w-full rounded-xl bg-[#303030] px-5 text-sm font-black text-white hover:bg-black" %>
+
+          <% else %>
+
+            <div class="rounded-xl border border-red-200 bg-red-50 p-4">
+              <p class="text-sm font-bold text-red-700">
+                Вы вошли под другим email.
+              </p>
+
+              <p class="mt-1 text-sm text-red-600">
+                Приглашение предназначено для
+                <%= @invitation.email %>.
+              </p>
+            </div>
+
+          <% end %>
+
+        </div>
+
+      <% else %>
+
+        <div class="mt-6">
+
+          <p class="mb-4 text-sm text-[#616161]">
+            Чтобы принять приглашение, войдите в Lavkin или зарегистрируйтесь.
+          </p>
+
+          <%= button_to "Продолжить",
+                        accept_member_invitation_path(@invitation.token),
+                        method: :post,
+                        class: "h-11 w-full rounded-xl bg-[#303030] px-5 text-sm font-black text-white hover:bg-black" %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

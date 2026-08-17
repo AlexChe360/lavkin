@@ -1,0 +1,213 @@
+<% content_for :title, "#{@inventory_count.number} — Lavkin" %>
+
+<div>
+
+  <%= link_to "← Инвентаризации",
+              admin_inventory_counts_path,
+              class: "text-sm font-bold text-[#616161] hover:text-black" %>
+
+
+  <div class="mt-5 flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+
+    <div>
+
+      <h1 class="text-2xl font-black">
+        <%= @inventory_count.number %>
+      </h1>
+
+      <p class="mt-2 text-sm text-[#616161]">
+        <%= @inventory_count.location.name %>
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <% if @inventory_count.status == "draft" %>
+
+        <%= button_to "Начать инвентаризацию",
+                      start_admin_inventory_count_path(@inventory_count),
+                      method: :post,
+                      class: "h-10 rounded-xl bg-[#303030] px-4 text-sm font-black text-white hover:bg-black" %>
+
+      <% elsif @inventory_count.status == "counting" %>
+
+        <%= button_to "Завершить инвентаризацию",
+              complete_admin_inventory_count_path(@inventory_count),
+              method: :post,
+              data: {
+                action: "click->confirm#open",
+                confirm_title: "Завершить инвентаризацию?",
+                confirm_message: "Фактические остатки будут применены к складу. После завершения изменить эту инвентаризацию будет нельзя.",
+                confirm_text: "Завершить",
+                confirm_danger: false
+              },
+              class: "h-10 rounded-xl bg-[#008060] px-4 text-sm font-black text-white" %>
+
+      <% else %>
+
+        <span class="rounded-full bg-[#e3f1df] px-3 py-1.5 text-xs font-black text-[#0a5c36]">
+          Завершена
+        </span>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <% if @inventory_count.status == "draft" %>
+
+    <section class="mt-7 rounded-2xl border border-black/10 bg-white px-6 py-14 text-center">
+
+      <h2 class="font-black">
+        Инвентаризация ещё не начата
+      </h2>
+
+      <p class="mt-2 text-sm text-[#8a8a8a]">
+        При запуске Lavkin зафиксирует текущие остатки этого склада.
+      </p>
+
+    </section>
+
+  <% else %>
+
+    <%= form_with model: [:admin, @inventory_count],
+                  method: :patch do |form| %>
+
+      <section class="mt-7 overflow-hidden rounded-2xl border border-black/10 bg-white">
+
+        <div class="overflow-x-auto">
+
+          <table class="w-full min-w-[800px]">
+
+            <thead class="bg-[#f7f7f7]">
+
+              <tr class="border-b border-black/10">
+
+                <th class="px-4 py-3 text-left text-xs font-black text-[#8a8a8a]">
+                  Товар
+                </th>
+
+                <th class="px-4 py-3 text-left text-xs font-black text-[#8a8a8a]">
+                  SKU
+                </th>
+
+                <th class="px-4 py-3 text-right text-xs font-black text-[#8a8a8a]">
+                  В системе
+                </th>
+
+                <th class="px-4 py-3 text-right text-xs font-black text-[#8a8a8a]">
+                  По факту
+                </th>
+
+                <th class="px-4 py-3 text-right text-xs font-black text-[#8a8a8a]">
+                  Разница
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody class="divide-y divide-black/10">
+
+              <%= form.fields_for :inventory_count_items,
+                                  @items do |item_form| %>
+
+                <% item = item_form.object %>
+
+                <tr>
+
+                  <td class="px-4 py-4 text-sm font-black">
+                    <%= item.product.name %>
+                  </td>
+
+                  <td class="px-4 py-4 font-mono text-sm text-[#616161]">
+                    <%= item.product.sku %>
+                  </td>
+
+                  <td class="px-4 py-4 text-right text-sm font-black">
+                    <%= item.expected_quantity %>
+                  </td>
+
+                  <td class="px-4 py-4 text-right">
+
+                    <% if @inventory_count.completed? %>
+
+                      <span class="text-sm font-black">
+                        <%= item.actual_quantity %>
+                      </span>
+
+                    <% else %>
+
+                      <%= item_form.number_field :actual_quantity,
+                                                 min: 0,
+                                                 value: item.actual_quantity,
+                                                 class: "h-10 w-24 rounded-lg border border-black/10 px-3 text-right text-sm font-black" %>
+
+                    <% end %>
+
+                  </td>
+
+                  <td class="px-4 py-4 text-right">
+
+                    <% if item.difference.nil? %>
+
+                      <span class="text-sm text-[#8a8a8a]">
+                        —
+                      </span>
+
+                    <% elsif item.difference.positive? %>
+
+                      <span class="text-sm font-black text-[#008060]">
+                        +<%= item.difference %>
+                      </span>
+
+                    <% elsif item.difference.negative? %>
+
+                      <span class="text-sm font-black text-red-600">
+                        <%= item.difference %>
+                      </span>
+
+                    <% else %>
+
+                      <span class="text-sm font-black text-[#616161]">
+                        0
+                      </span>
+
+                    <% end %>
+
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+        <% unless @inventory_count.completed? %>
+
+          <div class="flex justify-end border-t border-black/10 px-4 py-4">
+
+            <%= form.submit "Сохранить подсчёт",
+                            class: "h-10 cursor-pointer rounded-xl bg-[#303030] px-5 text-sm font-black text-white hover:bg-black" %>
+
+          </div>
+
+        <% end %>
+
+      </section>
+
+    <% end %>
+
+  <% end %>
+
+</div>

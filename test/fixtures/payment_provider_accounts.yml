@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  account: one
+  provider: MyString
+  status: MyString
+  request_id: MyString
+  external_client_id: MyString
+  merchant_id: MyString
+  terminal_number: MyString
+  connected_at: 2026-08-17 18:35:49
+  last_checked_at: 2026-08-17 18:35:49
+
+two:
+  account: two
+  provider: MyString
+  status: MyString
+  request_id: MyString
+  external_client_id: MyString
+  merchant_id: MyString
+  terminal_number: MyString
+  connected_at: 2026-08-17 18:35:49
+  last_checked_at: 2026-08-17 18:35:49

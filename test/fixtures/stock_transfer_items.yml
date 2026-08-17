@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stock_transfer: one
+  product: one
+  quantity: 1
+
+two:
+  stock_transfer: two
+  product: two
+  quantity: 1

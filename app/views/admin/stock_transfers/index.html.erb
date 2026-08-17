@@ -1,0 +1,119 @@
+<% content_for :title, "Перемещения — Lavkin" %>
+
+<div>
+
+  <div class="flex items-start justify-between gap-6">
+
+    <div>
+      <h1 class="text-2xl font-black tracking-[-0.04em]">
+        Перемещения
+      </h1>
+
+      <p class="mt-1 text-sm text-[#616161]">
+        Перемещения товаров между складами.
+      </p>
+    </div>
+
+    <%= link_to "+ Новое перемещение",
+                new_admin_stock_transfer_path,
+                class: "inline-flex h-10 items-center rounded-xl bg-[#303030] px-4 text-sm font-black text-white hover:bg-black" %>
+
+  </div>
+
+
+  <section class="mt-7 overflow-hidden rounded-2xl border border-black/10 bg-white">
+
+    <% if @transfers.any? %>
+
+      <table class="w-full">
+
+        <thead class="bg-[#f7f7f7]">
+          <tr class="border-b border-black/10">
+
+            <th class="px-4 py-3 text-left text-xs font-black text-[#8a8a8a]">
+              Номер
+            </th>
+
+            <th class="px-4 py-3 text-left text-xs font-black text-[#8a8a8a]">
+              Откуда
+            </th>
+
+            <th class="px-4 py-3 text-left text-xs font-black text-[#8a8a8a]">
+              Куда
+            </th>
+
+            <th class="px-4 py-3 text-left text-xs font-black text-[#8a8a8a]">
+              Статус
+            </th>
+
+          </tr>
+        </thead>
+
+
+        <tbody class="divide-y divide-black/10">
+
+          <% @transfers.each do |transfer| %>
+
+            <tr>
+
+              <td class="px-4 py-4">
+
+                <%= link_to transfer.number,
+                            admin_stock_transfer_path(transfer),
+                            class: "text-sm font-black hover:underline" %>
+
+              </td>
+
+              <td class="px-4 py-4 text-sm">
+                <%= transfer.source_location.name %>
+              </td>
+
+              <td class="px-4 py-4 text-sm">
+                <%= transfer.destination_location.name %>
+              </td>
+
+              <td class="px-4 py-4">
+
+                <% if transfer.status == "completed" %>
+
+                  <span class="rounded-full bg-[#e3f1df] px-3 py-1 text-xs font-black text-[#0a5c36]">
+                    Выполнено
+                  </span>
+
+                <% else %>
+
+                  <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-black text-amber-700">
+                    Черновик
+                  </span>
+
+                <% end %>
+
+              </td>
+
+            </tr>
+
+          <% end %>
+
+        </tbody>
+
+      </table>
+
+    <% else %>
+
+      <div class="px-6 py-16 text-center">
+
+        <h2 class="font-black">
+          Перемещений пока нет
+        </h2>
+
+        <p class="mt-2 text-sm text-[#8a8a8a]">
+          Создайте первое перемещение между складами.
+        </p>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+</div>
