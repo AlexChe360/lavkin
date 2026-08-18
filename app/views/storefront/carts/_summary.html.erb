@@ -1,0 +1,67 @@
+<%= turbo_frame_tag "cart_summary" do %>
+
+  <div class="sticky top-6 rounded-2xl border border-black/10 bg-white p-5">
+
+    <h2 class="font-black">
+      Итого
+    </h2>
+
+
+    <div class="mt-5 flex items-center justify-between">
+
+      <span class="text-sm text-[#616161]">
+        Товаров
+      </span>
+
+      <span class="text-sm font-black">
+        <%= cart.total_quantity %>
+      </span>
+
+    </div>
+
+
+    <div class="
+      mt-4 flex items-center justify-between
+      border-t border-black/10
+      pt-4
+    ">
+
+      <span class="font-black">
+        К оплате
+      </span>
+
+      <span class="text-xl font-black">
+        <%= number_to_currency(
+              cart.total_price,
+              unit: "₸",
+              format: "%n %u",
+              delimiter: " ",
+              separator: ","
+            ) %>
+      </span>
+
+    </div>
+
+
+    <%= link_to "Оформить заказ",
+                storefront_checkout_path(
+                  shop_slug: shop.slug
+                ),
+                data: {
+                  turbo_frame: "_top"
+                },
+                class: "
+                  mt-6 inline-flex h-12 w-full
+                  items-center justify-center
+                  rounded-xl
+                  bg-[#303030]
+                  px-5
+                  text-sm font-black
+                  text-white
+                  transition
+                  hover:bg-black
+                " %>
+
+  </div>
+
+<% end %>

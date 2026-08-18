@@ -7,68 +7,87 @@ module Storefront
                   only: %i[
                     update
                     destroy
+                    increment
+                    decrement
                   ]
 
     def create
-      available =
-        InventoryLevel
-          .where(product: @product)
-          .sum(:quantity)
+      available = available_quantity(@product)
 
       if available <= 0
-        redirect_back(
-          fallback_location:
-            storefront_root_path(
-              shop_slug: @shop.slug
-            ),
-          alert: "Товара нет в наличии"
-        )
+        respond_to do |format|
+          format.turbo_stream do
+            head :unprocessable_entity
+          end
+
+          format.html do
+            redirect_back(
+              fallback_location:
+                storefront_root_path(
+                  shop_slug: @shop.slug
+                ),
+              alert: "Товара нет в наличии"
+            )
+          end
+        end
 
         return
       end
 
-      item =
+      @cart_item =
         @cart.cart_items.find_by(
           product: @product
         )
 
-      if item.present?
-        new_quantity =
-          [ item.quantity + 1, available ].min
-
-        item.update!(
-          quantity: new_quantity
+      if @cart_item.present?
+        @cart_item.update!(
+          quantity: [
+            @cart_item.quantity + 1,
+            available
+          ].min
         )
       else
-        @cart.cart_items.create!(
-          product: @product,
-          quantity: 1
-        )
+        @cart_item =
+          @cart.cart_items.create!(
+            product: @product,
+            quantity: 1
+          )
       end
 
-      redirect_back(
-        fallback_location:
-          storefront_root_path(
-            shop_slug: @shop.slug
-          ),
-        notice: "Товар добавлен в корзину"
-      )
+      @inventory_quantity = available
+
+      respond_to do |format|
+        format.turbo_stream
+
+        format.html do
+          redirect_back(
+            fallback_location:
+              storefront_root_path(
+                shop_slug: @shop.slug
+              )
+          )
+        end
+      end
     end
 
     def update
-      item =
-        @cart
-          .cart_items
-          .find(params[:id])
-
       quantity =
         params[:quantity].to_i
 
-      if quantity < 1
-        quantity = 1
-      end
+      quantity = 1 if quantity < 1
 
-      item.update!(
+      available =
+        available_quantity(
+          @cart_item.product
+        )
+
+      quantity =
+        [
+          quantity,
+          available
+        ].min
+
+      @cart_item.update!(
         quantity: quantity
       )
 
@@ -86,11 +105,73 @@ module Storefront
     end
 
     def destroy
+      @product = @cart_item.product
+      @inventory_quantity =
+        available_quantity(@product)
+
       @cart_item.destroy!
 
-      redirect_to storefront_cart_path(
-        shop_slug: @shop.slug
+      respond_to do |format|
+        format.turbo_stream
+
+        format.html do
+          redirect_to storefront_cart_path(
+            shop_slug: @shop.slug
+          )
+        end
+      end
+    end
+
+    def increment
+      @product = @cart_item.product
+
+      @inventory_quantity =
+        available_quantity(@product)
+
+      new_quantity =
+        [
+          @cart_item.quantity + 1,
+          @inventory_quantity
+        ].min
+
+      @cart_item.update!(
+        quantity: new_quantity
       )
+
+      respond_to do |format|
+        format.turbo_stream
+
+        format.html do
+          redirect_to storefront_cart_path(
+            shop_slug: @shop.slug
+          )
+        end
+      end
+    end
+
+    def decrement
+      @product = @cart_item.product
+
+      @inventory_quantity =
+        available_quantity(@product)
+
+      if @cart_item.quantity <= 1
+        @cart_item.destroy!
+      else
+        @cart_item.update!(
+          quantity: @cart_item.quantity - 1
+        )
+      end
+
+      respond_to do |format|
+        format.turbo_stream
+
+        format.html do
+          redirect_to storefront_cart_path(
+            shop_slug: @shop.slug
+          )
+        end
+      end
     end
 
     private
@@ -107,7 +188,15 @@ module Storefront
       @cart_item =
         @cart
           .cart_items
-          .find(params[:id])
+          .find(
+            params[:cart_item_id] || params[:id]
+          )
+    end
+
+    def available_quantity(product)
+      InventoryLevel
+        .where(product: product)
+        .sum(:quantity)
     end
   end
 end

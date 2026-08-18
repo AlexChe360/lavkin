@@ -1,0 +1,29 @@
+<%= turbo_stream.replace dom_id(@product, :storefront) do %>
+  <%= render "storefront/home/product_card",
+             product: @product,
+             shop: @shop,
+             cart: @cart,
+             inventory_quantity: @inventory_quantity %>
+<% end %>
+
+
+<%= turbo_stream.replace dom_id(@cart_item) do %>
+  <%= render "storefront/carts/item",
+             item: @cart_item,
+             shop: @shop %>
+<% end %>
+
+
+<%= turbo_stream.replace "cart_summary" do %>
+  <%= render "storefront/carts/summary",
+             cart: @cart,
+             shop: @shop %>
+<% end %>
+
+<%= turbo_stream.update "cart-count" do %>
+  <% if @cart.total_quantity.positive? %>
+    <span class="flex size-6 items-center justify-center rounded-full bg-white text-xs font-black text-[#303030]">
+      <%= @cart.total_quantity %>
+    </span>
+  <% end %>
+<% end %>

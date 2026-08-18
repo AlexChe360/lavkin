@@ -23,11 +23,18 @@ env:
   secret:
     - RAILS_MASTER_KEY
     - LAVKIN_DATABASE_PASSWORD
+    - SMTP_USERNAME
+    - SMTP_PASSWORD
 
   clear:
     RAILS_ENV: production
     SOLID_QUEUE_IN_PUMA: true
     DB_HOST: lavkin-db
+
+    MAIL_FROM: "Lavkin <no-reply@lavkin.kz>"
+    SMTP_ADDRESS: smtp.yandex.ru
+    SMTP_PORT: 587
+    SMTP_DOMAIN: lavkin.kz
 
 
 aliases:

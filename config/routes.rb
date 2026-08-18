@@ -143,7 +143,10 @@ end
                 create
                 update
                 destroy
-              ]
+              ] do
+                patch :increment
+                patch :decrement
+              end
 
     resource :checkout,
            only: %i[

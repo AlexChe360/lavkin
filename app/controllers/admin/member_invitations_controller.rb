@@ -28,6 +28,8 @@ module Admin
       else
         render :new,
               status: :unprocessable_entity
+
+        nil
       end
     end
 

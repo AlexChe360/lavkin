@@ -32,9 +32,9 @@
 
 
       <%= link_to storefront_cart_path(
-                    shop_slug: @shop.slug
-                  ),
-                  class: "inline-flex h-10 items-center gap-2 rounded-xl bg-[#303030] px-4 text-sm font-black text-white transition hover:bg-black" do %>
+            shop_slug: @shop.slug
+          ),
+          class: "inline-flex h-10 items-center gap-2 rounded-xl bg-[#303030] px-4 text-sm font-black text-white transition hover:bg-black" do %>
 
         <svg
           width="17"
@@ -55,13 +55,13 @@
           Корзина
         </span>
 
-        <% if @cart.total_quantity.positive? %>
-
-          <span class="flex size-6 items-center justify-center rounded-full bg-white text-xs font-black text-[#303030]">
-            <%= @cart.total_quantity %>
-          </span>
-
-        <% end %>
+        <span id="cart-count">
+          <% if @cart.total_quantity.positive? %>
+            <span class="flex size-6 items-center justify-center rounded-full bg-white text-xs font-black text-[#303030]">
+              <%= @cart.total_quantity %>
+            </span>
+          <% end %>
+        </span>
 
       <% end %>
 
@@ -205,7 +205,7 @@
     <% end %>
 
 
-    <!-- PRODUCTS -->
+  <!-- PRODUCTS -->
 
     <% if @products.any? %>
 
@@ -213,162 +213,11 @@
 
         <% @products.each do |product| %>
 
-          <% quantity = @inventory_quantities.fetch(product.id, 0) %>
-
-          <article class="
-            group overflow-hidden
-            rounded-2xl border border-black/10
-            bg-white
-            transition
-            hover:-translate-y-0.5
-            hover:shadow-lg
-          ">
-
-            <!-- IMAGE -->
-
-            <%= link_to storefront_product_path(
-                          shop_slug: @shop.slug,
-                          slug: product.slug
-                        ),
-                        class: "block" do %>
-
-              <div class="relative aspect-square overflow-hidden bg-[#f1f1f1]">
-
-                <% if product.image.attached? %>
-
-                  <%= image_tag product.image,
-                                class: "
-                                  h-full w-full object-contain p-6
-                                  transition duration-300
-                                  group-hover:scale-[1.03]
-                                " %>
-
-                <% else %>
-
-                  <div class="flex h-full items-center justify-center text-sm font-bold text-[#8a8a8a]">
-                    Нет изображения
-                  </div>
-
-                <% end %>
-
-
-                <% if quantity <= 0 %>
-
-                  <span class="
-                    absolute left-3 top-3
-                    rounded-full bg-white/95
-                    px-3 py-1
-                    text-xs font-black text-[#616161]
-                    shadow-sm
-                  ">
-                    Нет в наличии
-                  </span>
-
-                <% end %>
-
-              </div>
-
-            <% end %>
-
-
-            <!-- CONTENT -->
-
-            <div class="p-5">
-
-              <% if product.category.present? %>
-
-                <p class="text-xs font-bold text-[#8a8a8a]">
-                  <%= product.category.name %>
-                </p>
-
-              <% end %>
-
-
-              <%= link_to storefront_product_path(
-                            shop_slug: @shop.slug,
-                            slug: product.slug
-                          ),
-                          class: "mt-2 block" do %>
-
-                <h2 class="line-clamp-2 text-lg font-black tracking-[-0.03em] transition group-hover:underline">
-                  <%= product.name %>
-                </h2>
-
-              <% end %>
-
-
-              <div class="mt-5 flex items-end justify-between gap-4">
-
-                <!-- PRICE -->
-
-                <div>
-
-                  <p class="text-lg font-black">
-                    <%= number_to_currency(
-                          product.price,
-                          unit: "₸",
-                          format: "%n %u",
-                          delimiter: " ",
-                          separator: ","
-                        ) %>
-                  </p>
-
-
-                  <% if product.compare_at_price.present? &&
-                        product.compare_at_price > product.price %>
-
-                    <p class="mt-1 text-xs text-[#8a8a8a] line-through">
-                      <%= number_to_currency(
-                            product.compare_at_price,
-                            unit: "₸",
-                            format: "%n %u",
-                            delimiter: " ",
-                            separator: ","
-                          ) %>
-                    </p>
-
-                  <% end %>
-
-                </div>
-
-
-                <!-- ADD TO CART -->
-
-                <% if quantity.positive? %>
-
-                  <%= button_to storefront_cart_items_path(
-                                  shop_slug: @shop.slug
-                                ),
-                                params: {
-                                  product_id: product.id
-                                },
-                                method: :post,
-                                class: "
-                                  flex size-10 shrink-0
-                                  items-center justify-center
-                                  rounded-xl bg-[#303030]
-                                  text-xl font-black text-white
-                                  transition hover:bg-black
-                                ",
-                                title: "Добавить в корзину" do %>
-
-                    +
-
-                  <% end %>
-
-                <% else %>
-
-                  <span class="text-xs font-bold text-[#8a8a8a]">
-                    Нет в наличии
-                  </span>
-
-                <% end %>
-
-              </div>
-
-            </div>
-
-          </article>
+          <%= render "storefront/home/product_card",
+                    product: product,
+                    shop: @shop,
+                    cart: @cart,
+                    inventory_quantity: @inventory_quantities.fetch(product.id, 0) %>
 
         <% end %>
 
@@ -393,6 +242,7 @@
       </div>
 
     <% end %>
+
 
   </main>
 
