@@ -18,6 +18,18 @@ Rails.application.routes.draw do
        to: "member_invitations#accept",
        as: :accept_member_invitation
 
+  get "/email_verification",
+    to: "email_verifications#pending",
+    as: :email_verification_pending
+
+  get "/email_verifications/:token",
+      to: "email_verifications#show",
+      as: :email_verification
+
+  post "/email_verifications/resend",
+     to: "email_verifications#resend",
+     as: :resend_email_verification
+
   namespace :admin do
     root "dashboard#show"
 

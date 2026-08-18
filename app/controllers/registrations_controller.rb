@@ -16,8 +16,7 @@ class RegistrationsController < ApplicationController
         User.new
       end
 
-    @account =
-      Account.new
+    @account = Account.new
   end
 
   def create
@@ -33,17 +32,18 @@ class RegistrationsController < ApplicationController
 
   private
 
-  def create_invited_user
-    unless @user.email_address.downcase ==
-           @invitation.email.downcase
+  # ------------------------------------------------------------
+  # INVITED USER
+  # ------------------------------------------------------------
 
+  def create_invited_user
+    unless invitation_email_matches?
       @user.errors.add(
         :email_address,
         "должен совпадать с email приглашения"
       )
 
-      @account =
-        Account.new
+      @account = Account.new
 
       render :new,
              status: :unprocessable_entity
@@ -52,8 +52,7 @@ class RegistrationsController < ApplicationController
     end
 
     unless @user.save
-      @account =
-        Account.new
+      @account = Account.new
 
       render :new,
              status: :unprocessable_entity
@@ -61,16 +60,15 @@ class RegistrationsController < ApplicationController
       return
     end
 
-    start_new_session_for @user
+    send_verification_email(@user)
 
-    token =
-      session.delete(
-        :pending_invitation_token
-      )
-
-    redirect_to member_invitation_path(token),
-                notice: "Аккаунт создан. Примите приглашение."
+    redirect_to new_session_path,
+                notice: verification_notice(@user)
   end
+
+  # ------------------------------------------------------------
+  # OWNER
+  # ------------------------------------------------------------
 
   def create_owner
     @account =
@@ -96,23 +94,25 @@ class RegistrationsController < ApplicationController
       )
     end
 
-    start_new_session_for @user
+    # Важно:
+    # письмо отправляем уже после завершения транзакции.
+    send_verification_email(@user)
 
-    redirect_to admin_root_path,
-                notice: "Аккаунт успешно создан"
+    redirect_to new_session_path,
+                notice: verification_notice(@user)
 
   rescue ActiveRecord::RecordInvalid
     render :new,
            status: :unprocessable_entity
   end
 
+  # ------------------------------------------------------------
+  # INVITATION
+  # ------------------------------------------------------------
+
   def set_pending_invitation
     token =
       session[:pending_invitation_token]
-
-      Rails.logger.info(
-        ">>> PENDING INVITATION TOKEN: #{token.inspect}"
-      )
 
     return if token.blank?
 
@@ -120,10 +120,6 @@ class RegistrationsController < ApplicationController
       MemberInvitation.find_by(
         token: token
       )
-
-    Rails.logger.info(
-      ">>> INVITATION: #{@invitation.inspect}"
-    )
 
     if @invitation.nil? ||
        @invitation.accepted? ||
@@ -136,6 +132,36 @@ class RegistrationsController < ApplicationController
       @invitation = nil
     end
   end
+
+  def invitation_email_matches?
+    @user.email_address
+         .to_s
+         .strip
+         .downcase ==
+      @invitation.email
+                 .to_s
+                 .strip
+                 .downcase
+  end
+
+  # ------------------------------------------------------------
+  # EMAIL VERIFICATION
+  # ------------------------------------------------------------
+
+  def send_verification_email(user)
+    UserMailer
+      .with(user: user)
+      .email_verification
+      .deliver_later
+  end
+
+  def verification_notice(user)
+    "Аккаунт создан. Мы отправили письмо на #{user.email_address}. Подтвердите email, чтобы войти."
+  end
+
+  # ------------------------------------------------------------
+  # PARAMS
+  # ------------------------------------------------------------
 
   def user_params
     params
@@ -152,6 +178,10 @@ class RegistrationsController < ApplicationController
       .require(:account)
       .permit(:name)
   end
+
+  # ------------------------------------------------------------
+  # AUTHENTICATED USER
+  # ------------------------------------------------------------
 
   def redirect_authenticated_user
     return unless authenticated?
