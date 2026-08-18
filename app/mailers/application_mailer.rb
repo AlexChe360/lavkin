@@ -1,7 +1,7 @@
 class ApplicationMailer < ActionMailer::Base
   default from: ENV.fetch(
     "MAIL_FROM",
-    "Lavkin <no-reply@lavkin.kz>"
+    "Lavkin <info@lavkin.kz>"
   )
 
   layout "mailer"
