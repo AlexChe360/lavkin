@@ -2,100 +2,183 @@
   class="
     sticky top-0 z-30 h-16
     border-b border-black/10
-    bg-white/95 backdrop-blur
+    bg-white/95
+    backdrop-blur
   "
 >
 
-  <div class="flex h-full items-center justify-between px-5 sm:px-6 lg:px-8">
+  <div class="
+    flex h-full
+    items-center justify-between
+    px-4
+    sm:px-6
+    lg:px-8
+  ">
 
-    <!-- MOBILE LOGO -->
+    <!-- LEFT -->
 
-    <div class="flex items-center gap-3 lg:hidden">
+    <div class="flex min-w-0 items-center gap-3">
 
-      <%= image_tag "lavkin-mark.png",
-                alt: "Lavkin",
-                class: "size-9 shrink-0 object-contain" %>
+      <!-- MOBILE MENU BUTTON -->
 
-      <strong>
-        Lavkin
-      </strong>
+      <button
+        type="button"
+        data-action="click->mobile-menu#open"
+        class="
+          flex size-10 shrink-0
+          items-center justify-center
+          rounded-xl
+          border border-black/10
+          bg-white
+          text-[#303030]
+          transition
+          hover:bg-[#f5f5f5]
+          lg:hidden
+        "
+        aria-label="Открыть меню"
+      >
+
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <path d="M4 6h16"/>
+          <path d="M4 12h16"/>
+          <path d="M4 18h16"/>
+        </svg>
+
+      </button>
+
+
+      <!-- MOBILE LOGO -->
+
+      <%= link_to admin_root_path,
+                  class: "
+                    flex min-w-0
+                    items-center gap-2.5
+                    lg:hidden
+                  " do %>
+
+        <%= image_tag "lavkin-mark.png",
+                      alt: "Lavkin",
+                      class: "
+                        size-9 shrink-0
+                        object-contain
+                      " %>
+
+        <strong class="
+          truncate
+          text-base
+          tracking-[-0.03em]
+        ">
+          Lavkin
+        </strong>
+
+      <% end %>
+
+
+      <!-- SEARCH -->
+
+      <button
+        type="button"
+        class="
+          hidden w-full
+          max-w-[500px]
+          items-center gap-3
+          rounded-xl
+          bg-[#f1f1f1]
+          px-4 py-2.5
+          text-left
+          text-sm
+          text-[#8a8a8a]
+          transition
+          hover:bg-[#e8e8e8]
+          md:flex
+        "
+      >
+
+        <svg
+          width="17"
+          height="17"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
+
+        Поиск
+
+      </button>
 
     </div>
-
-
-    <!-- SEARCH -->
-
-    <button
-      type="button"
-      class="
-        hidden w-full max-w-[500px] items-center gap-3
-        rounded-xl bg-[#f1f1f1]
-        px-4 py-2.5 text-left
-        text-sm text-[#8a8a8a]
-        transition hover:bg-[#e8e8e8]
-        md:flex
-      "
-    >
-
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <circle cx="11" cy="11" r="8"/>
-        <path d="m21 21-4.3-4.3"/>
-      </svg>
-
-      Поиск
-
-    </button>
-
 
 
     <!-- USER -->
 
     <div
       data-controller="user-menu"
-      class="relative"
+      class="relative shrink-0"
     >
 
       <button
         type="button"
         data-action="click->user-menu#toggle"
         class="
-          flex items-center gap-3
+          flex items-center gap-2
           rounded-xl
-          px-3 py-2
+          px-2 py-2
           text-left
           transition
           hover:bg-black/5
+          sm:gap-3
+          sm:px-3
         "
       >
 
-        <div class="hidden text-right sm:block">
+        <!-- USER INFO -->
 
-          <p class="text-sm font-black">
-            <%= Current.user.name.presence %>
-          </p>
+        <div class="hidden text-right md:block">
 
-          <p class="text-xs text-[#8a8a8a]">
+          <% if Current.user.name.present? %>
+
+            <p class="text-sm font-black">
+              <%= Current.user.name %>
+            </p>
+
+          <% end %>
+
+          <p class="max-w-[220px] truncate text-xs text-[#8a8a8a]">
             <%= Current.user.email_address %>
           </p>
 
         </div>
 
+
+        <!-- AVATAR -->
+
         <div class="
-          flex size-9 items-center justify-center
-          rounded-full bg-[#eeeeee]
+          flex size-9 shrink-0
+          items-center justify-center
+          rounded-full
+          bg-[#eeeeee]
           text-xs font-black
         ">
           <%= Current.user.email_address.first.upcase %>
         </div>
 
+
+        <!-- CHEVRON -->
+
         <svg
+          class="hidden text-[#8a8a8a] sm:block"
           width="15"
           height="15"
           viewBox="0 0 24 24"
@@ -109,11 +192,14 @@
       </button>
 
 
+      <!-- USER DROPDOWN -->
+
       <div
         data-user-menu-target="menu"
         class="
-          absolute right-0 top-full z-50 mt-2 hidden
-          w-64
+          absolute right-0 top-full z-50 mt-2
+          hidden
+          w-[min(280px,calc(100vw-32px))]
           overflow-hidden
           rounded-2xl
           border border-black/10
@@ -122,30 +208,44 @@
         "
       >
 
+        <!-- ACCOUNT -->
+
         <div class="border-b border-black/10 px-4 py-3">
 
-          <p class="text-sm font-black">
+          <p class="truncate text-sm font-black">
             <%= Current.user.name.presence || Current.user.email_address %>
           </p>
 
-          <p class="text-xs text-[#8a8a8a]">
-            <%= Current.account&.name %>
-          </p>
+          <% if Current.account.present? %>
 
-          <p class="mt-0.5 text-xs text-[#8a8a8a]">
-            <%= Current.membership&.role_name %>
-          </p>
+            <p class="mt-1 truncate text-xs text-[#8a8a8a]">
+              <%= Current.account.name %>
+            </p>
+
+          <% end %>
+
+          <% if Current.membership.present? %>
+
+            <p class="mt-0.5 text-xs text-[#8a8a8a]">
+              <%= Current.membership.role_name %>
+            </p>
+
+          <% end %>
 
         </div>
 
+
+        <!-- LINKS -->
 
         <div class="p-2">
 
           <%= link_to admin_profile_path,
                       class: "
-                        flex items-center rounded-xl
+                        flex items-center
+                        rounded-xl
                         px-3 py-2.5
                         text-sm font-bold
+                        transition
                         hover:bg-[#f5f5f5]
                       " do %>
 
@@ -156,9 +256,11 @@
 
           <%= link_to edit_admin_account_password_path,
                       class: "
-                        flex items-center rounded-xl
+                        flex items-center
+                        rounded-xl
                         px-3 py-2.5
                         text-sm font-bold
+                        transition
                         hover:bg-[#f5f5f5]
                       " do %>
 
@@ -174,9 +276,11 @@
 
             <%= link_to admin_members_path,
                         class: "
-                          flex items-center rounded-xl
+                          flex items-center
+                          rounded-xl
                           px-3 py-2.5
                           text-sm font-bold
+                          transition
                           hover:bg-[#f5f5f5]
                         " do %>
 
@@ -189,17 +293,21 @@
         </div>
 
 
+        <!-- LOGOUT -->
+
         <div class="border-t border-black/10 p-2">
 
           <%= button_to session_path,
                         method: :delete,
                         class: "
-                          flex w-full items-center
+                          flex w-full
+                          items-center
                           rounded-xl
                           px-3 py-2.5
                           text-left
                           text-sm font-bold
                           text-red-600
+                          transition
                           hover:bg-red-50
                         " do %>
 

@@ -22,30 +22,68 @@
                           "data-turbo-track": "reload" %>
 
   <%= stylesheet_link_tag "actiontext",
-                        "data-turbo-track": "reload" %>
+                          "data-turbo-track": "reload" %>
 
   <%= javascript_importmap_tags %>
 
 </head>
 
 
-<body data-controller="confirm" class="bg-[#f1f1f1] text-[#303030]">
+<body
+  data-controller="confirm mobile-menu"
+  class="bg-[#f1f1f1] text-[#303030]"
+>
 
   <div class="min-h-screen">
 
+    <!-- SIDEBAR -->
+
     <%= render "admin/shared/sidebar" %>
+
+
+    <!-- MOBILE OVERLAY -->
+
+    <div
+      data-mobile-menu-target="overlay"
+      data-action="click->mobile-menu#close"
+      class="
+        fixed inset-0 z-40
+        hidden
+        bg-black/40
+        backdrop-blur-[1px]
+        lg:hidden
+      "
+    ></div>
+
+
+    <!-- CONTENT -->
 
     <div class="lg:pl-[240px]">
 
       <%= render "admin/shared/topbar" %>
 
+
       <main class="min-h-screen">
 
-        <div class="mx-auto max-w-[1400px] px-5 py-8 sm:px-6 lg:px-8">
+        <div class="
+          mx-auto
+          max-w-[1400px]
+          px-4 py-6
+          sm:px-6 sm:py-8
+          lg:px-8
+        ">
 
           <% if notice.present? %>
 
-            <div class="mb-6 rounded-xl border border-[#b7e4cf] bg-[#eaf8f1] px-4 py-3 text-sm font-semibold text-[#005c40]">
+            <div class="
+              mb-6
+              rounded-xl
+              border border-[#b7e4cf]
+              bg-[#eaf8f1]
+              px-4 py-3
+              text-sm font-semibold
+              text-[#005c40]
+            ">
               <%= notice %>
             </div>
 
@@ -54,7 +92,15 @@
 
           <% if alert.present? %>
 
-            <div class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+            <div class="
+              mb-6
+              rounded-xl
+              border border-red-200
+              bg-red-50
+              px-4 py-3
+              text-sm font-semibold
+              text-red-700
+            ">
               <%= alert %>
             </div>
 
@@ -70,6 +116,7 @@
     </div>
 
   </div>
+
 
   <%= render "shared/confirm_dialog" %>
 

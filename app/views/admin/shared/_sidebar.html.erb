@@ -1,9 +1,16 @@
 <aside
+  data-mobile-menu-target="menu"
   class="
-    fixed inset-y-0 left-0 z-40 hidden w-[240px]
+    fixed inset-y-0 left-0 z-50
+    flex w-[240px]
+    -translate-x-full
+    flex-col
     border-r border-black/10
     bg-[#ebebeb]
-    lg:flex lg:flex-col
+    transition-transform
+    duration-200
+    ease-out
+    lg:translate-x-0
   "
 >
 
@@ -11,20 +18,50 @@
   <!-- LOGO                                                   -->
   <!-- ====================================================== -->
 
-  <div class="flex h-16 shrink-0 items-center px-4">
+  <div class="flex h-16 shrink-0 items-center justify-between px-4">
 
     <%= link_to admin_root_path,
                 class: "flex items-center gap-3" do %>
 
       <%= image_tag "lavkin-mark.png",
-                alt: "Lavkin",
-                class: "size-9 shrink-0 object-contain" %>
+                    alt: "Lavkin",
+                    class: "size-9 shrink-0 object-contain" %>
 
       <span class="text-lg font-black tracking-[-0.04em]">
         Lavkin
       </span>
 
     <% end %>
+
+
+    <button
+      type="button"
+      data-action="click->mobile-menu#close"
+      class="
+        flex size-9
+        items-center justify-center
+        rounded-lg
+        text-[#616161]
+        transition
+        hover:bg-black/5
+        hover:text-black
+        lg:hidden
+      "
+      aria-label="Закрыть меню"
+    >
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
+        <path d="M6 6l12 12"/>
+        <path d="M18 6L6 18"/>
+      </svg>
+    </button>
 
   </div>
 
