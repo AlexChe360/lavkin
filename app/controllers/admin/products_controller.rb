@@ -108,7 +108,7 @@ module Admin
     def require_current_shop
       return if Current.shop.present?
 
-      redirect_to admin_shop_path,
+      redirect_to admin_shops_path,
                 alert: "Сначала выберите магазин"
     end
   end
