@@ -15,7 +15,9 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <%= favicon_link_tag "lavkin-mark.png" %>
+  <%= favicon_link_tag "lavkin-mark.png",
+      rel: "icon",
+      type: "image/png" %>
 
   <%= stylesheet_link_tag "tailwind",
                           "data-turbo-track": "reload" %>
