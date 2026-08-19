@@ -12,6 +12,13 @@ class AdminController < ApplicationController
                 alert: "Бизнес-аккаунт не найден."
   end
 
+  def requeire_current_shop
+    return if Current.shop.present?
+
+    redirect_to admin_shops_path,
+              alert: "Выберите магазин"
+  end
+
   def current_membership
     Current.membership
   end
@@ -40,7 +47,7 @@ class AdminController < ApplicationController
                 alert: "Недостаточно прав"
   end
 
-  def require_inventory_managment!
+  def require_inventory_management!
     return if current_membership&.owner? ||
               current_membership&.admin?
       redirect_to admin_root_path,

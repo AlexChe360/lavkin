@@ -3,7 +3,6 @@ class Current < ActiveSupport::CurrentAttributes
   attribute :account
   attribute :shop
   attribute :membership
-  attribute :user
 
   delegate :user,
     to: :session,
