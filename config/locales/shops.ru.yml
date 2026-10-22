@@ -1,0 +1,31 @@
+ru:
+  activerecord:
+    models:
+      shop:
+        one: Магазин
+        few: Магазина
+        many: Магазинов
+        other: Магазина
+    attributes:
+      shop:
+        name: Название магазина
+        slug: Адрес витрины
+        description: Описание
+        status: Статус
+    enums:
+      shop:
+        status:
+          draft: Черновик
+          active: Активен
+          archived: В архиве
+    errors:
+      models:
+        shop:
+          attributes:
+            slug:
+              blank: "не может быть пустым"
+              invalid: "может содержать только латиницу, цифры и дефисы (например, zheltoksan-156)"
+              taken: "уже занят, выберите другой"
+            name:
+              blank: "не может быть пустым"
+              too_long: "слишком длинное (максимум %{count} символов)"
