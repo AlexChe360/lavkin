@@ -32,7 +32,8 @@
                    class: "text-sm font-black" %>
 
     <%= form.text_field :name,
-                        placeholder: "Например, Кофе",
+                        placeholder: "Например, Новогодние шары",
+                        autofocus: true,
                         class: "
                           mt-2 h-11 w-full
                           rounded-xl border border-black/10
@@ -54,7 +55,10 @@
                    class: "text-sm font-black" %>
 
     <%= form.text_field :slug,
-                        placeholder: "coffee",
+                        placeholder: "Можно оставить пустым",
+                        autocomplete: "off",
+                        autocapitalize: "none",
+                        spellcheck: false,
                         class: "
                           mt-2 h-11 w-full
                           rounded-xl border border-black/10
@@ -68,7 +72,8 @@
                         " %>
 
     <p class="mt-2 text-xs text-[#8a8a8a]">
-      Например: coffee, desserts, accessories
+      Необязательно. Заполнится из названия (русские буквы
+      транслитерируются). Только латиница, цифры и дефисы.
     </p>
 
   </div>
@@ -96,6 +101,7 @@
 
     <%= form.number_field :position,
                           min: 0,
+                          value: category.position || 0,
                           class: "
                             mt-2 h-11 w-full
                             rounded-xl border border-black/10

@@ -1,0 +1,26 @@
+ru:
+  activerecord:
+    models:
+      category:
+        one: Категория
+        few: Категории
+        many: Категорий
+        other: Категории
+    attributes:
+      category:
+        name: Название
+        slug: Адрес категории
+        position: Порядок
+        active: Активна
+    errors:
+      models:
+        category:
+          attributes:
+            slug:
+              blank: "не может быть пустым"
+              invalid: "может содержать только латиницу, цифры и дефисы"
+              taken: "уже занят в этом магазине"
+            name:
+              blank: "не может быть пустым"
+          restrict_dependent_destroy:
+            has_many: "Нельзя удалить категорию, пока в ней есть товары"

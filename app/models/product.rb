@@ -1,4 +1,7 @@
 class Product < ApplicationRecord
+  include Sluggable
+  self.slug_scope_column = :shop_id
+
   belongs_to :shop
   # Категория обязательна: колонка products.category_id в базе NOT NULL
   belongs_to :category
@@ -10,14 +13,11 @@ class Product < ApplicationRecord
   has_many :locations, through: :inventory_levels
   has_many :inventory_movements, dependent: :restrict_with_error
 
-  before_validation :normalize_slug
   before_validation :normalize_sku
 
   validates :name, presence: true
 
-  validates :slug,
-            presence: true,
-            uniqueness: { scope: :shop_id }
+  validates :slug, uniqueness: { scope: :shop_id }
 
   validates :sku,
             presence: true,
@@ -40,33 +40,6 @@ class Product < ApplicationRecord
   end
 
   private
-
-  # Slug не введён: берём из названия (кириллица транслитерируется),
-  # при занятости в рамках магазина добавляем -2, -3...
-  # Введён вручную: нормализуем, а занятость покажет uniqueness.
-  def normalize_slug
-    if slug.blank?
-      self.slug = unique_slug(Slugifier.call(name))
-    else
-      self.slug = Slugifier.call(slug)
-    end
-  end
-
-  def unique_slug(base)
-    return base if base.blank?
-
-    candidate = base
-    counter = 2
-
-    while Product.where(shop_id: shop_id)
-                 .where.not(id: id)
-                 .exists?(slug: candidate)
-      candidate = "#{base}-#{counter}"
-      counter += 1
-    end
-
-    candidate
-  end
 
   def normalize_sku
     self.sku = sku.to_s.strip.upcase

@@ -1,23 +1,17 @@
 class Category < ApplicationRecord
+  include Sluggable
+  self.slug_scope_column = :shop_id
+
   belongs_to :shop
 
-  has_many :products,
-            dependent: :nullify
+  # products.category_id в базе NOT NULL, поэтому dependent: :nullify
+  # приводил бы к 500 при удалении категории. Запрещаем удаление,
+  # пока в категории есть товары.
+  has_many :products, dependent: :restrict_with_error
 
-  before_validation :normalize_slug
+  validates :name, presence: true
 
-  validates :name,
-            presence: true
-
-  validates :slug,
-            presence: true,
-            uniqueness: {
-              scope: :shop_id
-            },
-            format: {
-              with: /\A[a-z0-9]+(?:-[a-z0-9]+)*\z/,
-              message: "может содержать только латинские буквы, цифры и дефисы"
-            }
+  validates :slug, uniqueness: { scope: :shop_id }
 
   validates :position,
             numericality: {
@@ -25,19 +19,6 @@ class Category < ApplicationRecord
               greater_than_or_equal_to: 0
             }
 
-  scope :active,
-        -> { where(active: true) }
-
-  scope :ordered,
-        -> { order(position: :asc, name: :asc) }
-
-  private
-
-  def normalize_slug
-    self.slug =
-      slug.to_s
-        .strip
-        .downcase
-        .parameterize
-  end
+  scope :active, -> { where(active: true) }
+  scope :ordered, -> { order(position: :asc, name: :asc) }
 end
