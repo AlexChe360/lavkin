@@ -1,0 +1,33 @@
+ru:
+  activerecord:
+    models:
+      product:
+        one: Товар
+        few: Товара
+        many: Товаров
+        other: Товара
+    attributes:
+      product:
+        name: Название
+        slug: Адрес товара
+        sku: Артикул
+        price: Цена
+        compare_at_price: Старая цена
+        category: Категория
+        description: Описание
+        active: Активен
+        featured: Рекомендуемый
+    errors:
+      models:
+        product:
+          attributes:
+            category:
+              blank: "не выбрана. Сначала создайте категорию, если их ещё нет"
+              required: "не выбрана. Сначала создайте категорию, если их ещё нет"
+              invalid: "должна принадлежать этому магазину"
+            slug:
+              blank: "не может быть пустым"
+              taken: "уже занят в этом магазине"
+            sku:
+              blank: "не может быть пустым"
+              taken: "уже используется в этом магазине"

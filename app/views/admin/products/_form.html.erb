@@ -47,10 +47,14 @@
 
         <%= form.text_field :slug,
                             placeholder: "cappuccino",
+                            autocomplete: "off",
+                            autocapitalize: "none",
+                            spellcheck: false,
                             class: "mt-2 h-11 w-full rounded-xl border border-black/10 bg-white px-4 font-mono text-sm outline-none focus:border-[#008060]" %>
 
         <p class="mt-2 text-xs text-[#8a8a8a]">
-          Например: /products/cappuccino
+          Латиница, цифры и дефисы. Если оставить пустым, адрес
+          заполнится из названия (русские буквы транслитерируются).
         </p>
       </div>
 
@@ -121,14 +125,21 @@
                        "Категория",
                        class: "block text-sm font-black" %>
 
-        <%= form.collection_select :category_id,
-                                   Current.shop.categories.ordered,
-                                   :id,
-                                   :name,
-                                   {
-                                     include_blank: "Без категории"
-                                   },
-                                   class: "mt-2 h-11 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-[#008060]" %>
+        <% if @categories.any? %>
+          <%= form.collection_select :category_id,
+                                     @categories,
+                                     :id,
+                                     :name,
+                                     { prompt: "Выберите категорию" },
+                                     class: "mt-2 h-11 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-[#008060]" %>
+        <% else %>
+          <p class="mt-2 rounded-xl border border-dashed border-black/20 px-4 py-3 text-sm text-[#8a8a8a]">
+            В этом магазине пока нет категорий.
+            <%= link_to "Создать категорию",
+                        new_admin_category_path,
+                        class: "font-black text-[#303030] underline" %>
+          </p>
+        <% end %>
       </div>
 
 
