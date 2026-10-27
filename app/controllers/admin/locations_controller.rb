@@ -7,7 +7,7 @@ module Admin
                     update
                     destroy
                   ]
-    before_action :require_inventory_managment!,
+    before_action :require_inventory_management!,
                   only: %i[
                     new
                     create

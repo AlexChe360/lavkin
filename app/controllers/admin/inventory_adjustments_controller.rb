@@ -3,7 +3,7 @@ module Admin
     before_action :require_current_shop
     before_action :set_product
     before_action :set_location
-    before_action :require_inventory_managment!
+    before_action :require_inventory_management!
 
     def new
       @inventory_level =

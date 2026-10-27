@@ -9,7 +9,7 @@ module Admin
                     start
                     complete
                   ]
-    before_action :require_inventory_managment!
+    before_action :require_inventory_management!
 
     def index
       @inventory_counts =
